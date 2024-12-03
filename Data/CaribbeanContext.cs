@@ -57,7 +57,36 @@ public class CaribbeanContext : DbContext
             }
         );
 
-        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<Reserva>()
+        .HasOne(r => r.Cliente)
+        .WithMany(c => c.Reservas)
+        .HasForeignKey(r => r.IdCliente);
+
+        modelBuilder.Entity<Reserva>()
+            .HasOne(r => r.Huesped)
+            .WithMany()
+            .HasForeignKey(r => r.IdHuesped);
+
+        modelBuilder.Entity<Reserva>()
+            .HasOne(r => r.Habitacion)
+            .WithMany(h => h.Reservas)
+            .HasForeignKey(r => r.IdHabitacion);
+
+        modelBuilder.Entity<Reserva>()
+            .HasMany(r => r.Servicios)
+            .WithMany(s => s.Reservas);
+
+        modelBuilder.Entity<Reserva>()
+            .HasMany(r => r.Pagos)
+            .WithOne(p => p.idReservaNavigation)
+            .HasForeignKey(p => p.idReserva);
+
+        modelBuilder.Entity<Reserva>()
+            .HasOne(r => r.Estado)
+            .WithMany(e => e.Reservas)
+            .HasForeignKey(r => r.IdEstado)
+            .OnDelete(DeleteBehavior.Restrict);
+                
         // Configuraciones adicionales si es necesario
         modelBuilder.Entity<Usuarios>()
                 .HasIndex(u => u.Identificacion)
@@ -170,6 +199,7 @@ public class CaribbeanContext : DbContext
             .HasForeignKey(e => e.RolId)
             .OnDelete(DeleteBehavior.Restrict); // Evita eliminación en cascada de empleados si el rol es eliminado
 
+        base.OnModelCreating(modelBuilder);
     }
 }
 

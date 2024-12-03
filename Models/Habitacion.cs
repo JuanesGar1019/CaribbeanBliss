@@ -29,5 +29,4 @@ public class Habitacion
     [ForeignKey("IdEstado")]
     public HabitacionEstado EstadoHabitacion { get; set; }
     public virtual ICollection<Reserva> Reservas { get; set; }
-    public virtual ICollection<ReservaAdmin> ReservaAdmins { get; set; }
 }

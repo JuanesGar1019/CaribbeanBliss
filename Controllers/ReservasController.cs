@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Caribbean2.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Caribbean2.Models;
 
 namespace Caribbean2.Controllers
 {
@@ -19,240 +19,206 @@ namespace Caribbean2.Controllers
         }
 
         // GET: Reservas
-        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var reservas = await _context.Reservas
-                .Include(r => r.IdHabitacion)
-                .Include(r => r.ServiciosSeleccionados)
-                .Include(r => r.IdCliente)
-                .Include(r => r.IdEstado)
-                .ToListAsync();
+            var caribbeanContext = _context.Reservas.Include(r => r.Cliente).Include(r => r.Estado).Include(r => r.Habitacion).Include(r => r.Huesped);
+            return View(await caribbeanContext.ToListAsync());
+        }
 
-            var reservasAdmin = reservas.Select(r => new ReservaAdmin
+        // GET: Reservas/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
             {
-                IdReserva = r.IdReserva,
-                NombreCliente = r.IdCliente.nombre,
-                EstadoReserva = r.IdEstado.nombre,
-                IdHuesped = r.IdCliente.idCliente,
-                Huespeds = new List<Huesped> { new Huesped { Id = r.IdCliente.idCliente, NombreCompleto = r.IdCliente.nombre } },
-                IdHabitacion = r.IdHabitacion.IdHabitacion,
-                PrecioTotal = r.PrecioReserva,
-                Servicios = r.ServiciosSeleccionados.ToList(),
-                FechaInicio = r.FechaInicio,
-                FechaFin = r.FechaFin
-            }).ToList();
+                return NotFound();
+            }
 
-            return View(reservasAdmin);
+            var reserva = await _context.Reservas
+                .Include(r => r.Cliente)
+                .Include(r => r.Estado)
+                .Include(r => r.Habitacion)
+                .Include(r => r.Huesped)
+                .FirstOrDefaultAsync(m => m.IdReserva == id);
+            if (reserva == null)
+            {
+                return NotFound();
+            }
+
+            return View(reserva);
         }
 
         // GET: Reservas/Create
         public IActionResult Create()
         {
-            // Filtrar habitaciones activas
-            var habitacionesActivas = _context.Habitaciones
-                .Where(h => h.EstadoHabitacion.Nombre == "Activo")
-                .Select(h => new { h.IdHabitacion, h.Nombre })
-                .ToList();
-
-            ViewData["IdHabitacion"] = new SelectList(habitacionesActivas, "IdHabitacion", "Nombre");
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "Nombre");
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "idCliente", "nombre");
             ViewData["IdEstado"] = new SelectList(_context.ReservaEstados, "IdEstado", "Nombre");
+            ViewData["IdHabitacion"] = _context.Habitaciones.Select(h => new SelectListItem
+            {
+                Value = h.IdHabitacion.ToString(),
+                Text = $"{h.Nombre} - {h.PrecioHabitacion:C}"
+            }).ToList();
+            ViewData["IdHuesped"] = new SelectList(_context.Huespedes, "Id", "NombreCompleto");
+            ViewData["ServiciosActivos"] = _context.Servicios.Where(s => s.EstadoServicio == true).ToList();
             return View();
         }
 
         // POST: Reservas/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdReserva,FechaInicio,FechaFin,IdHabitacion,PrecioReserva,IdCliente,IdEstado")] Reserva reserva)
+        public async Task<IActionResult> Create([Bind("IdReserva,IdCliente,IdHuesped,IdHabitacion,FechaInicio,FechaFin,NumeroPersonas,PrecioTotal,Anticipo,Notas")] Reserva reserva, int[] ServiciosSeleccionados)
         {
             if (ModelState.IsValid)
             {
+                // Asignar IdEstado a 1 por defecto
+                reserva.IdEstado = 1;
+
+                reserva.Servicios = await _context.Servicios.Where(s => ServiciosSeleccionados.Contains(s.IdServicio)).ToListAsync();
                 _context.Add(reserva);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-
-            // Filtrar habitaciones activas
-            var habitacionesActivas = _context.Habitaciones
-                .Where(h => h.EstadoHabitacion.Nombre == "Activa")
-                .Select(h => new { h.IdHabitacion, h.Nombre })
-                .ToList();
-
-            ViewData["IdHabitacion"] = new SelectList(habitacionesActivas, "IdHabitacion", "Nombre", reserva.IdHabitacion);
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "Nombre", reserva.IdCliente);
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "idCliente", "nombre", reserva.IdCliente);
             ViewData["IdEstado"] = new SelectList(_context.ReservaEstados, "IdEstado", "Nombre", reserva.IdEstado);
+            ViewData["IdHabitacion"] = new SelectList(_context.Habitaciones, "IdHabitacion", "Nombre", reserva.IdHabitacion);
+            ViewData["IdHuesped"] = new SelectList(_context.Huespedes, "Id", "CorreoElectronico", reserva.IdHuesped);
+            ViewData["ServiciosActivos"] = _context.Servicios.Where(s => s.EstadoServicio == true).ToList();
             return View(reserva);
         }
 
-        // Método para el administrador
-        public IActionResult CreateAdmin()
+        // GET: Reservas/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "Nombre");
-            ViewData["IdEstado"] = new SelectList(_context.ReservaEstados, "IdEstado", "Nombre");
-            ViewData["IdHabitacion"] = new SelectList(_context.Habitaciones, "IdHabitacion", "Nombre");
-            ViewData["Servicios"] = new MultiSelectList(_context.Servicios, "IdServicio", "Nombre");
-            return View("Index"); // Cambia el nombre de la vista si es necesario
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var reserva = await _context.Reservas
+                .Include(r => r.Servicios)
+                .FirstOrDefaultAsync(m => m.IdReserva == id);
+            if (reserva == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "idCliente", "nombre", reserva.IdCliente);
+            ViewData["IdEstado"] = new SelectList(_context.ReservaEstados, "IdEstado", "Nombre", reserva.IdEstado);
+            ViewData["IdHabitacion"] = _context.Habitaciones.Select(h => new SelectListItem
+            {
+                Value = h.IdHabitacion.ToString(),
+                Text = $"{h.Nombre} - {h.PrecioHabitacion:C}"
+            }).ToList();
+            ViewData["IdHuesped"] = new SelectList(_context.Huespedes, "Id", "NombreCompleto", reserva.IdHuesped);
+            ViewData["ServiciosActivos"] = _context.Servicios.Where(s => s.EstadoServicio == true).ToList();
+
+            return View(reserva);
         }
 
-        // Método para el cliente
-        public IActionResult CreateCliente()
-        {
-            ViewData["IdHabitacion"] = new SelectList(_context.Habitaciones, "IdHabitacion", "Nombre");
-            ViewData["Servicios"] = new MultiSelectList(_context.Servicios, "IdServicio", "Nombre");
-            return View("ReservaAdmin"); // Cambia el nombre de la vista si es necesario
-        }
-
-        // GET: Reservas/ReservaAdmin
-        public IActionResult ReservaAdmin()
-        {
-            ViewBag.HabitacionesActivas = _context.Habitaciones
-                .Where(h => h.EstadoHabitacion.Nombre == "Activa")
-                .ToList();
-
-            ViewBag.ServiciosActivos = _context.Servicios
-                .Where(s => s.EstadoServicio == true)
-                .ToList();
-
-            ViewBag.ClientesActivos = _context.Clientes
-                .Where(c => c.ClienteEstado == true)
-                .ToList();
-
-            ViewBag.HuespedesActivos = _context.Huespedes
-                .Where(h => h.IdEstadoHuesped == 1) // Asumiendo que 1 es el estado activo
-                .ToList();
-
-            return View();
-        }
-
-        // Método para calcular el precio total de la reserva
-        private async Task<decimal> CalcularPrecioReserva(Reserva reserva, int[] serviciosSeleccionados)
-        {
-            var habitacion = await _context.Habitaciones.FindAsync(reserva.IdHabitacion.IdHabitacion);
-            if (habitacion == null)
-                return 0;
-
-            var dias = (reserva.FechaFin - reserva.FechaInicio).Days;
-
-            var servicios = await _context.Servicios
-                .Where(s => serviciosSeleccionados.Contains(s.IdServicio))
-                .ToListAsync();
-
-            var precioServicios = servicios.Sum(s => s.PrecioServicio);
-
-            return (habitacion.PrecioHabitacion * dias) + precioServicios;
-        }
-
-        // POST: Reservas/CreateAdmin
+        // POST: Reservas/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateAdmin([Bind("IdReserva,FechaInicio,FechaFin,IdCliente,IdEstado,IdHabitacion")] Reserva reserva, int[] serviciosSeleccionados)
+        public async Task<IActionResult> Edit(int id, [Bind("IdReserva,IdCliente,IdHuesped,IdHabitacion,FechaInicio,FechaFin,NumeroPersonas,PrecioTotal,Anticipo,IdEstado,Notas")] Reserva reserva, int[] ServiciosSeleccionados)
         {
+            if (id != reserva.IdReserva)
+            {
+                return NotFound();
+            }
+
             if (ModelState.IsValid)
             {
-                if (reserva.FechaInicio > reserva.FechaFin)
+                try
                 {
-                    ModelState.AddModelError("", "La fecha de inicio debe ser anterior a la fecha de fin.");
-                    return View("Index", reserva);
+                    // Actualizar los servicios seleccionados
+                    var reservaExistente = await _context.Reservas
+                        .Include(r => r.Servicios)
+                        .FirstOrDefaultAsync(r => r.IdReserva == id);
+
+                    if (reservaExistente != null)
+                    {
+                        reservaExistente.Servicios.Clear();
+                        reservaExistente.Servicios = await _context.Servicios.Where(s => ServiciosSeleccionados.Contains(s.IdServicio)).ToListAsync();
+
+                        // Actualizar los demás campos
+                        reservaExistente.IdCliente = reserva.IdCliente;
+                        reservaExistente.IdHuesped = reserva.IdHuesped;
+                        reservaExistente.IdHabitacion = reserva.IdHabitacion;
+                        reservaExistente.FechaInicio = reserva.FechaInicio;
+                        reservaExistente.FechaFin = reserva.FechaFin;
+                        reservaExistente.NumeroPersonas = reserva.NumeroPersonas;
+                        reservaExistente.PrecioTotal = reserva.PrecioTotal;
+                        reservaExistente.Anticipo = reserva.Anticipo;
+                        reservaExistente.IdEstado = reserva.IdEstado;
+                        reservaExistente.Notas = reserva.Notas;
+
+                        _context.Update(reservaExistente);
+                        await _context.SaveChangesAsync();
+                    }
                 }
-
-                reserva.PrecioReserva = await CalcularPrecioReserva(reserva, serviciosSeleccionados);
-
-                // Relacionar los servicios seleccionados con la reserva
-                reserva.ServiciosSeleccionados = await _context.Servicios
-                    .Where(s => serviciosSeleccionados.Contains(s.IdServicio))
-                    .ToListAsync();
-
-                _context.Add(reserva);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-
-            // Reestablecer los datos de las listas desplegables
-            ViewData["IdCliente"] = new SelectList(_context.Huespedes, "Id", "NombreCompleto", reserva.IdCliente.idCliente);
-            ViewData["IdEstado"] = new SelectList(_context.ReservaEstados, "idEstado", "nombre", reserva.IdEstado.idEstado);
-            ViewData["IdHabitacion"] = new SelectList(_context.Habitaciones, "IdHabitacion", "Nombre", reserva.IdHabitacion.IdHabitacion);
-            ViewData["Servicios"] = new MultiSelectList(_context.Servicios, "IdServicio", "Nombre", serviciosSeleccionados);
-
-            return View("Index", reserva);
-        }
-
-        // POST: Reservas/CreateCliente
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateCliente([Bind("IdReserva,FechaInicio,FechaFin,IdHabitacion")] Reserva reserva, int[] serviciosSeleccionados)
-        {
-            if (ModelState.IsValid)
-            {
-                if (reserva.FechaInicio > reserva.FechaFin)
+                catch (DbUpdateConcurrencyException)
                 {
-                    ModelState.AddModelError("", "La fecha de inicio debe ser anterior a la fecha de fin.");
-                    return View("ClienteCreate", reserva);
+                    if (!ReservaExists(reserva.IdReserva))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
-
-                reserva.PrecioReserva = await CalcularPrecioReserva(reserva, serviciosSeleccionados);
-
-                // Relacionar los servicios seleccionados con la reserva
-                reserva.ServiciosSeleccionados = await _context.Servicios
-                    .Where(s => serviciosSeleccionados.Contains(s.IdServicio))
-                    .ToListAsync();
-
-                _context.Add(reserva);
-                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            // Reestablecer los datos de las listas desplegables
-            ViewData["IdHabitacion"] = new SelectList(_context.Habitaciones, "IdHabitacion", "Nombre", reserva.IdHabitacion.IdHabitacion);
-            ViewData["Servicios"] = new MultiSelectList(_context.Servicios, "IdServicio", "Nombre", serviciosSeleccionados);
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "idCliente", "nombre", reserva.IdCliente);
+            ViewData["IdEstado"] = new SelectList(_context.ReservaEstados, "IdEstado", "Nombre", reserva.IdEstado);
+            ViewData["IdHabitacion"] = new SelectList(_context.Habitaciones, "IdHabitacion", "Nombre", reserva.IdHabitacion);
+            ViewData["IdHuesped"] = new SelectList(_context.Huespedes, "Id", "CorreoElectronico", reserva.IdHuesped);
+            ViewData["ServiciosActivos"] = _context.Servicios.Where(s => s.EstadoServicio == true).ToList();
 
-            return View("ReservaAdmin", reserva);
+            return View(reserva);
         }
 
-        // POST: Reservas/ReservaAdmin
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ReservaAdmin([Bind("IdReserva,NombreCliente,EstadoReserva,IdHuesped,FechaInicio,FechaFin,IdHabitacion")] ReservaAdmin reservaAdmin, int[] ServiciosSeleccionados)
+        // GET: Reservas/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
-            if (ModelState.IsValid)
+            if (id == null)
             {
-                var reserva = new Reserva
-                {
-                    FechaInicio = reservaAdmin.FechaInicio,
-                    FechaFin = reservaAdmin.FechaFin,
-                    IdHabitacion = await _context.Habitaciones.FindAsync(reservaAdmin.IdHabitacion),
-                    ServiciosSeleccionados = await _context.Servicios
-                        .Where(s => ServiciosSeleccionados.Contains(s.IdServicio))
-                        .ToListAsync(),
-                    IdCliente = await _context.Clientes.FindAsync(reservaAdmin.IdHuesped),
-                    IdEstado = await _context.ReservaEstados.FirstOrDefaultAsync(e => e.nombre == reservaAdmin.EstadoReserva)
-                };
-
-                reserva.PrecioReserva = await CalcularPrecioReserva(reserva, ServiciosSeleccionados);
-
-                _context.Add(reserva);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
 
-            ViewBag.HabitacionesActivas = _context.Habitaciones
-                .Where(h => h.EstadoHabitacion.Nombre == "Activa")
-                .ToList();
+            var reserva = await _context.Reservas
+                .Include(r => r.Cliente)
+                .Include(r => r.Estado)
+                .Include(r => r.Habitacion)
+                .Include(r => r.Huesped)
+                .FirstOrDefaultAsync(m => m.IdReserva == id);
+            if (reserva == null)
+            {
+                return NotFound();
+            }
 
-            ViewBag.ServiciosActivos = _context.Servicios
-                .Where(s => s.EstadoServicio == true)
-                .ToList();
-
-            ViewBag.ClientesActivos = _context.Clientes
-                .Where(c => c.ClienteEstado == true)
-                .ToList();
-
-            ViewBag.HuespedesActivos = _context.Huespedes
-                .Where(h => h.IdEstadoHuesped == 1) // Asumiendo que 1 es el estado activo
-                .ToList();
-
-            return View(reservaAdmin);
+            return View(reserva);
         }
 
+        // POST: Reservas/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var reserva = await _context.Reservas.FindAsync(id);
+            if (reserva != null)
+            {
+                _context.Reservas.Remove(reserva);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool ReservaExists(int id)
+        {
+            return _context.Reservas.Any(e => e.IdReserva == id);
+        }
     }
 }

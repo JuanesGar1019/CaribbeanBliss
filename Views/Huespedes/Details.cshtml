@@ -1,0 +1,118 @@
+﻿@model Huesped
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Huésped</title>
+    <link rel="stylesheet" href="~/css/sideBar.css">
+    <link rel="stylesheet" href="~/css/roles.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/menuCentral.css">
+</head>
+<body>
+    <!-- Topbar Star -->
+        <div class="container-fluid bg-dark px-5 d-lg-block d justify-content-around mb-2">
+            <div class="row gx-0 p-2 align-items-center">
+                <!-- Sección de botones visibles en pantallas pequeñas y grandes -->
+                <div class="btn-group-container d-flex justify-content-end">
+                    <a class="btn-modern d-flex d-lg-none" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cerrar sesión"
+                    asp-controller="Usuarios" asp-action="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+
+                    <a asp-controller="Usuarios" asp-action="Logout" class="btn-modern me-2 d-none d-lg-inline-flex">
+                        <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- Topbar End -->
+    <h1 class="d-flex justify-content-center mt-3">Detalles del Huésped</h1>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-6">
+                <div class="roles-card">
+                    <div class="roles-card-header d-flex justify-content-between align-items-center">
+                        <div class="text-center flex-grow-1">
+                            <h2 class="roles-card-title">Detalles del Huésped</h2>
+                        </div>
+                    </div>
+                    <div class="roles-card-body p-3">
+                        <dl class="row">
+                            <dt class="col-sm-2">
+                                Nombre
+                            </dt>
+                            <dd class="col-sm-10">
+                                @Html.DisplayFor(model => model.NombreCompleto)
+                            </dd>
+                            <dt class="col-sm-2">
+                                Correo
+                            </dt>
+                            <dd class="col-sm-10">
+                                @Html.DisplayFor(model => model.CorreoElectronico)
+                            </dd>
+                            <dt class="col-sm-2">
+                                Documento
+                            </dt>
+                            <dd class="col-sm-10">
+                                @Html.DisplayFor(model => model.TipoDocumento)
+                            </dd>
+                            <dt class="col-sm-2">
+                                Id
+                            </dt>
+                            <dd class="col-sm-10">
+                                @Html.DisplayFor(model => model.NumeroIdentificacion)
+                            </dd>
+                            <dt class="col-sm-2">
+                                Numero
+                            </dt>
+                            <dd class="col-sm-10">
+                                @Html.DisplayFor(model => model.NumeroContacto)
+                            </dd>
+                            <dt class="col-sm-2">
+                                Residencia
+                            </dt>
+                            <dd class="col-sm-10">
+                                @Html.DisplayFor(model => model.LugarResidencia)
+                            </dd>
+                            <dt class="col-sm-2">
+                                Fecha de llegada
+                            </dt>
+                            <dd class="col-sm-10">
+                                @Html.DisplayFor(model => model.FechaLlegada)
+                            </dd>
+                            <dt class="col-sm-2">
+                                Fecha de salida
+                            </dt>
+                            <dd class="col-sm-10">
+                                @Html.DisplayFor(model => model.FechaSalida)
+                            </dd>
+                            <dt class="col-sm-2">
+                                Estado
+                            </dt>
+                            <dd class="col-sm-10">
+                                @Html.DisplayFor(model => model.EstadoHuesped.NombreEstado)
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="text-center mt-4">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary me-2">
+                            <i class="bi bi-pencil-square"></i> Editar
+                        </a>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left-circle"></i> Regresar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

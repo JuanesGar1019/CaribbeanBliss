@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Caribbean2.Models.Huesped>
+
+@{
+    ViewData["Title"] = "Huespedes";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Specify layout
+}
+
+<h1 class="d-flex justify-content-center mt-3">Huéspedes</h1>
+
+<div class="main-content">
+    <div class="roles-section">
+        <div class="roles-card">
+            <div class="roles-card-header d-flex justify-content-between align-items-center">
+                <div class="text-center flex-grow-1">
+                    <h2 class="roles-card-title">Lista de Huéspedes</h2>
+                </div>
+                <div class="button-group">
+                    <a class="button" asp-action="Create">Crear Nuevo Huésped</a>
+                </div>
+            </div>
+            <div class="roles-card-body p-3">
+                <table id="table" class="table">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.NombreCompleto)</th>
+                            <th>@Html.DisplayNameFor(model => model.NumeroIdentificacion)</th>
+                            <th>@Html.DisplayNameFor(model => model.FechaLlegada)</th>
+                            <th>@Html.DisplayNameFor(model => model.FechaSalida)</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model) {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.NombreCompleto)</td>
+                                <td>@Html.DisplayFor(modelItem => item.NumeroIdentificacion)</td>
+                                <td>@Html.DisplayFor(modelItem => item.FechaLlegada)</td>
+                                <td>@Html.DisplayFor(modelItem => item.FechaSalida)</td>
+                                <td>@Html.DisplayFor(modelItem => item.EstadoHuesped.NombreEstado)</td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" data-bs-toggle="tooltip" title="Editar" class="icon-button edit-btn">
+                                        <ion-icon name="pencil-outline"></ion-icon>
+                                    </a> |
+                                    <a asp-action="Details" asp-route-id="@item.Id" data-bs-toggle="tooltip" title="Detalles" class="icon-button details-btn">
+                                        <ion-icon name="eye-outline"></ion-icon>
+                                    </a> |
+                                    <a asp-action="Delete" asp-route-id="@item.Id" data-bs-toggle="tooltip" title="Eliminar" class="icon-button delete-btn">
+                                        <ion-icon name="trash-outline"></ion-icon>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#table').DataTable({
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
+                },
+                pageLength: 5,
+                lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "Todos"]],
+                responsive: true,
+                columnDefs: [{
+                    targets: -1,
+                    orderable: false,
+                    searchable: false
+                }],
+                dom: 'lfrtip'
+            });
+        });
+    </script>
+}

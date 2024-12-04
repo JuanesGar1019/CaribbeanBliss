@@ -15,14 +15,79 @@
     <link rel="stylesheet" href="~/css/roles.css">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/css/menuCentral.css">
+    <link rel="stylesheet" href="~/css/Reservas.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .booking-header {
+            background: linear-gradient(rgba(30, 61, 89, 0.9), rgba(30, 61, 89, 0.9)),
+                        url('/images/hotel-bg.jpg') center/cover;
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+            border-radius: 10px;
+        }
+
+        .roles-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .roles-card-header {
+            background: linear-gradient(135deg, #1e3d59 0%, #2b5278 100%);
+            padding: 1.5rem;
+            border: none;
+        }
+
+        .roles-card-title {
+            color: white;
+            font-family: 'Playfair Display', serif;
+            margin: 0;
+        }
+
+        .form-control {
+            border: 2px solid #f1f4f8;
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-control:focus {
+            border-color: #1e3d59;
+            box-shadow: 0 0 0 0.2rem rgba(30, 61, 89, 0.25);
+        }
+
+        .btn-success {
+            background: #ff6e40;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-success:hover {
+            background: #ff5722;
+            transform: translateY(-2px);
+        }
+
+        .form-check-input:checked {
+            background-color: #198754;
+            border-color: #198754;
+        }
+    </style>
 </head>
+
 <body>
     <div class="container">
-        <h1 class="d-flex justify-content-center mt-3">Gestión de Reservas</h1>
+        <div class="booking-header text-center">
+            <h1>Gestión de Reservas</h1>
+            <p class="lead">Crea una nueva reserva en Caribbean Hotel</p>
+        </div>
         <div class="row justify-content-center">
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-8">
                 <div class="roles-card">
                     <div class="roles-card-header d-flex justify-content-between align-items-center">
                         <div class="text-center flex-grow-1">
@@ -31,80 +96,100 @@
                     </div>
                     <div class="roles-card-body p-3">
                         <form asp-action="Create" class="mb-3" id="createForm">
+                            <!-- Keep your existing form fields but with updated styling -->
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <div class="form-group">
-                                <label asp-for="IdCliente" class="control-label">Cliente</label>
-                                <select asp-for="IdCliente" class="form-control" asp-items="ViewBag.IdCliente" id="IdCliente"></select>
-                                <span asp-validation-for="IdCliente" class="text-danger"></span>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="IdCliente" class="control-label">Cliente</label>
+                                        <select asp-for="IdCliente" class="form-control" asp-items="ViewBag.IdCliente" id="IdCliente"></select>
+                                        <span asp-validation-for="IdCliente" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="IdHuesped" class="control-label">Huésped</label>
+                                        <select asp-for="IdHuesped" class="form-control" asp-items="ViewBag.IdHuesped" id="IdHuesped"></select>
+                                        <span asp-validation-for="IdHuesped" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="IdHabitacion" class="control-label">Habitación</label>
+                                        <select asp-for="IdHabitacion" class="form-control" id="IdHabitacion">
+                                            @if (ViewBag.IdHabitacion != null && ViewBag.IdHabitacion.Count > 0)
+                                            {
+                                                @foreach (var item in ViewBag.IdHabitacion)
+                                                {
+                                                    <option value="@item.Value" data-precio="@item.Text.Split('-')[1].Trim().Replace("$", "").Replace(",", "")">@item.Text</option>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <option value="">No hay habitaciones disponibles</option>
+                                            }
+                                        </select>
+                                        <span asp-validation-for="IdHabitacion" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="FechaInicio" class="control-label">Fecha de Inicio</label>
+                                        <input asp-for="FechaInicio" class="form-control" id="FechaInicio" type="date" />
+                                        <span asp-validation-for="FechaInicio" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="FechaFin" class="control-label">Fecha de Fin</label>
+                                        <input asp-for="FechaFin" class="form-control" id="FechaFin" type="date" />
+                                        <span asp-validation-for="FechaFin" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="NumeroPersonas" class="control-label">Número de Personas</label>
+                                        <input asp-for="NumeroPersonas" class="form-control" id="NumeroPersonas" type="number" min="1" />
+                                        <span asp-validation-for="NumeroPersonas" class="text-danger"></span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label asp-for="IdHuesped" class="control-label">Huésped</label>
-                                <select asp-for="IdHuesped" class="form-control" asp-items="ViewBag.IdHuesped" id="IdHuesped"></select>
-                                <span asp-validation-for="IdHuesped" class="text-danger"></span>
-                            </div>
-                           <div class="form-group">
-                                <label asp-for="IdHabitacion" class="control-label">Habitación</label>
-                                <select asp-for="IdHabitacion" class="form-control" id="IdHabitacion">
-                                @if (ViewBag.IdHabitacion != null && ViewBag.IdHabitacion.Count > 0)
-                                {
-                                    @foreach (var item in ViewBag.IdHabitacion)
-                                    {
-                                        <option value="@item.Value" data-precio="@item.Text.Split('-')[1].Trim().Replace("$", "").Replace(",", "")">@item.Text</option>
-                                    }
-                                }
-                                else
-                                {
-                                    <option value="">No hay habitaciones disponibles</option>
-                                }
-                            </select>
-                                <span asp-validation-for="IdHabitacion" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="FechaInicio" class="control-label">Fecha de Inicio</label>
-                                <input asp-for="FechaInicio" class="form-control" id="FechaInicio" />
-                                <span asp-validation-for="FechaInicio" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="FechaFin" class="control-label">Fecha de Fin</label>
-                                <input asp-for="FechaFin" class="form-control" id="FechaFin" />
-                                <span asp-validation-for="FechaFin" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="NumeroPersonas" class="control-label">Número de Personas</label>
-                                <input asp-for="NumeroPersonas" class="form-control" id="NumeroPersonas" />
-                                <span asp-validation-for="NumeroPersonas" class="text-danger"></span>
-                            </div>
+
                             <div class="form-group">
                                 <label asp-for="Notas" class="control-label">Notas</label>
-                                <textarea asp-for="Notas" class="form-control" id="Notas"></textarea>
+                                <textarea asp-for="Notas" class="form-control" id="Notas" rows="3"></textarea>
                                 <span asp-validation-for="Notas" class="text-danger"></span>
                             </div>
-                            <div class="form-group">
-                                <label asp-for="PrecioTotal" class="control-label">Precio Total</label>
-                                <input asp-for="PrecioTotal" class="form-control" id="PrecioTotal" readonly />
-                                <span asp-validation-for="PrecioTotal" class="text-danger"></span>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="PrecioTotal" class="control-label">Precio Total</label>
+                                        <input asp-for="PrecioTotal" class="form-control" id="PrecioTotal" readonly />
+                                        <span asp-validation-for="PrecioTotal" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Anticipo" class="control-label">Anticipo</label>
+                                        <input asp-for="Anticipo" class="form-control" id="Anticipo" type="number" min="0" step="0.01" />
+                                        <span asp-validation-for="Anticipo" class="text-danger"></span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label asp-for="Anticipo" class="control-label">Anticipo</label>
-                                <input asp-for="Anticipo" class="form-control" id="Anticipo" />
-                                <span asp-validation-for="Anticipo" class="text-danger"></span>
-                            </div>
+
                             <div class="form-group">
                                 <label class="control-label">Servicios Adicionales</label>
-                                <div>
+                                <div class="row g-3">
                                     @foreach (var servicio in ViewBag.ServiciosActivos)
                                     {
-                                        <div class="form-check">
-                                            <input class="form-check-input servicio-checkbox" type="checkbox" name="ServiciosSeleccionados" value="@servicio.IdServicio" data-precio="@servicio.PrecioServicio" id="servicio_@servicio.IdServicio">
-                                            <label class="form-check-label" for="servicio_@servicio.IdServicio">
-                                                @servicio.Nombre - @string.Format("{0:C}", servicio.PrecioServicio)
-                                            </label>
+                                        <div class="col-md-6">
+                                            <div class="form-check">
+                                                <input class="form-check-input servicio-checkbox" type="checkbox" 
+                                                       name="ServiciosSeleccionados" value="@servicio.IdServicio" 
+                                                       data-precio="@servicio.PrecioServicio" id="servicio_@servicio.IdServicio">
+                                                <label class="form-check-label" for="servicio_@servicio.IdServicio">
+                                                    @servicio.Nombre - @string.Format("{0:C}", servicio.PrecioServicio)
+                                                </label>
+                                            </div>
                                         </div>
                                     }
                                 </div>
-                                <span asp-validation-for="Servicios" class="text-danger"></span>
                             </div>
-                            <div class="form-group text-center mt-4">
+
+                            <div class="form-group textcenter mt-4">
                                 <button type="submit" class="btn btn-success me-2">
                                     <i class="bi bi-check-circle"></i> Crear
                                 </button>
@@ -119,14 +204,18 @@
         </div>
     </div>
 
+    <!-- Keep your existing scripts -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="lib/tempusdominus/js/moment.min.js"></script>
     <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Keep your existing JavaScript for calculations and form submission -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Keep your existing JavaScript functionality
             const fechaInicioInput = document.getElementById('FechaInicio');
             const fechaFinInput = document.getElementById('FechaFin');
             const habitacionSelect = document.getElementById('IdHabitacion');
@@ -135,6 +224,7 @@
             const anticipoInput = document.getElementById('Anticipo');
 
             function calcularPrecioTotal() {
+                // Your existing calculation logic
                 const fechaInicio = new Date(fechaInicioInput.value);
                 const fechaFin = new Date(fechaFinInput.value);
 
@@ -144,8 +234,8 @@
                 }
 
                 const dias = (fechaFin - fechaInicio) / (1000 * 60 * 60 * 24);
-
                 const habitacionPrecio = parseFloat(habitacionSelect.selectedOptions[0].getAttribute('data-precio'));
+                
                 if (isNaN(habitacionPrecio)) {
                     precioTotalInput.value = "0.00";
                     return;
@@ -167,10 +257,8 @@
                     precioTotal -= anticipo;
                 }
 
-                console.log("Días:", dias, "Precio Habitación:", habitacionPrecio, "Precio Total Calculado:", precioTotal);
                 precioTotalInput.value = precioTotal.toFixed(2);
             }
-
 
             fechaInicioInput.addEventListener('change', calcularPrecioTotal);
             fechaFinInput.addEventListener('change', calcularPrecioTotal);
@@ -182,7 +270,7 @@
         });
 
         document.getElementById('createForm').addEventListener('submit', function (e) {
-            e.preventDefault(); // Prevenir envío del formulario
+            e.preventDefault();
             Swal.fire({
                 title: '¿Estás seguro?',
                 text: "Estás a punto de crear una nueva reserva.",
@@ -194,7 +282,7 @@
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.submit(); // Enviar el formulario si el usuario confirma
+                    this.submit();
                 }
             });
         });

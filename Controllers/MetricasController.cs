@@ -18,6 +18,7 @@ namespace Caribbean2.Controllers
             _context = context;
         }
 
+        [RoleAuthorize(2, 3, 4)]
         // GET: Metricas
         public async Task<IActionResult> Index()
         {
@@ -271,7 +272,8 @@ namespace Caribbean2.Controllers
                 return Json(new { success = false, error = "Error al procesar la solicitud: " + ex.Message });
             }
         }
-
+        
+        [RoleAuthorize(2, 3, 4)]
         public IActionResult Dashboard()
         {
             return View();

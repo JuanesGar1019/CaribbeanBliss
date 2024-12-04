@@ -15,6 +15,7 @@ namespace Caribbean2.Controllers
             _context = context;
         }
 
+        [RoleAuthorize(2, 3, 4)]
         // Acción para listar clientes
         public async Task<IActionResult> Index()
         {

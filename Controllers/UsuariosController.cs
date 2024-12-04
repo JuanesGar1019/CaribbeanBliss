@@ -26,7 +26,7 @@ namespace Caribbean2.Controllers
         private static readonly Dictionary<string, string> _resetTokens = new Dictionary<string, string>();
 
         // GET: Usuarios
-        [RoleAuthorize(3,4)]
+        [RoleAuthorize(2,3,4)]
         [HttpGet]
         public async Task<IActionResult> Index(string searchString, int? pageNumber)
         {

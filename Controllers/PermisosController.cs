@@ -18,7 +18,7 @@ namespace Caribbean2.Controllers
         {
             _context = context;
         }
-
+        [RoleAuthorize( 3, 4)]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Permisos.ToListAsync());

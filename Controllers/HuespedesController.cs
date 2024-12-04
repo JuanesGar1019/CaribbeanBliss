@@ -17,7 +17,7 @@ namespace Caribbean2.Controllers
             _context = context;
         }
         
-        [RoleAuthorize(3, 4)]
+        [RoleAuthorize(2, 3, 4)]
         // GET: Huespedes
         public async Task<IActionResult> Index(string searchQuery)
         {

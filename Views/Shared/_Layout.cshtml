@@ -163,19 +163,14 @@
                                         <span>Contacto</span>
                                     </a>
                                 </li>
-                                <li>
-                                    <a asp-controller="Clientes" asp-action="Create">
-                                        <ion-icon name="person-add-outline"></ion-icon>
-                                        <span>Registrar Cliente</span>
-                                    </a>
-                                </li>
+                                
                             }
                             @if (userRoleId == 2 || userRoleId == 3 || userRoleId == 4)
                             {
                                 <li>
                                     <a asp-controller="Clientes" asp-action="ClientesAdmin">
                                         <ion-icon name="people-outline"></ion-icon>
-                                        <span>Administrar Clientes</span>
+                                        <span>Clientes</span>
                                     </a>
                                 </li>
                                 <li>
@@ -204,6 +199,10 @@
                                                     <a class="dropdown-item" href="@Url.Action("Index", "Permisos")">
                                                         <ion-icon name="shield-checkmark-outline"></ion-icon>
                                                         <span>Permisos</span>
+                                                    </a>
+                                                    <a class="dropdown-item" href="@Url.Action("Index", "Metricas")">
+                                                        <ion-icon name="shield-checkmark-outline"></ion-icon>
+                                                        <span>Metricas</span>
                                                     </a>
                                                 </div>
                                             </div>
@@ -279,7 +278,7 @@
             </div>
 
         </div>
-            <div class="container-fluid bg-dark">
+            <div class="container-fluid" style="background-color: black;">
                 <div class="row gx-0">
                     <!-- Sección de botones visibles en pantallas pequeñas y grandes -->
                     <div class="btn-group-container d-flex justify-content-end p-2">

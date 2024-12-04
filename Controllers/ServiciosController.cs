@@ -16,7 +16,7 @@ namespace Caribbean2.Controllers
         {
             _context = context;
         }
-
+        [RoleAuthorize(2, 3, 4)]
         // GET: Servicios
         public async Task<IActionResult> Index()
         {

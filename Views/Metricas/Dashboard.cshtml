@@ -20,7 +20,7 @@
 
         .metrics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(2, 1fr); /* Change to 2 columns */
             gap: 20px;
             margin-bottom: 20px;
         }
@@ -30,8 +30,8 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            height: 250px; /* Fixed height */
-            overflow: hidden; /* Prevent overflow */
+            height: 300px; /* Increased height */
+            overflow: hidden;
         }
 
         .chart-container {
@@ -40,8 +40,8 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             margin-bottom: 20px;
-            height: 250px; /* Reduced height */
-            position: relative; /* For proper chart sizing */
+            height: 300px; /* Match metric-card height */
+            position: relative;
         }
 
         .metric-value {
@@ -65,7 +65,7 @@
         }
 
         canvas {
-            max-height: 150px !important; /* Limit chart height */
+            max-height: 200px !important; /* Increased chart height */
         }
     </style>
 }
@@ -95,22 +95,22 @@
         <div class="metric-card">
             <div class="metric-title">Ingresos Totales</div>
             <div class="metric-value">$<span id="ingresosTotales">0</span></div>
-            <canvas id="ingresosChart" height="100"></canvas>
+            <canvas id="ingresosChart"></canvas>
         </div>
         <div class="metric-card">
             <div class="metric-title">Tasa de Ocupación</div>
             <div class="metric-value"><span id="tasaOcupacion">0</span>%</div>
-            <canvas id="ocupacionChart" height="100"></canvas>
+            <canvas id="ocupacionChart"></canvas>
         </div>
         <div class="metric-card">
             <div class="metric-title">Reservas Nuevas</div>
             <div class="metric-value"><span id="reservasNuevas">0</span></div>
-            <canvas id="reservasChart" height="100"></canvas>
+            <canvas id="reservasChart"></canvas>
         </div>
         <div class="metric-card">
             <div class="metric-title">Cancelaciones</div>
             <div class="metric-value"><span id="cancelaciones">0</span></div>
-            <canvas id="cancelacionesChart" height="100"></canvas>
+            <canvas id="cancelacionesChart"></canvas>
         </div>
     </div>
 

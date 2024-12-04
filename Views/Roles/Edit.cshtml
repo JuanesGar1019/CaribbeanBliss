@@ -41,6 +41,76 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <!-- SweetAlert JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        .booking-header {
+            background: linear-gradient(rgba(30, 61, 89, 0.9), rgba(30, 61, 89, 0.9)),
+                        url('/images/hotel-bg.jpg') center/cover;
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+            border-radius: 10px;
+        }
+
+        .roles-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .roles-card-header {
+            background: linear-gradient(135deg, #1e3d59 0%, #2b5278 100%);
+            padding: 1.5rem;
+            border: none;
+        }
+
+        .roles-card-title {
+            color: white;
+            font-family: 'Playfair Display', serif;
+            margin: 0;
+        }
+
+        .form-control {
+            border: 2px solid #f1f4f8;
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-control:focus {
+            border-color: #1e3d59;
+            box-shadow: 0 0 0 0.2rem rgba(30, 61, 89, 0.25);
+        }
+
+        .btn-success {
+            background: #ff6e40;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-success:hover {
+            background: #ff5722;
+            transform: translateY(-2px);
+        }
+
+        .form-check-input:checked {
+            background-color: #198754;
+            border-color: #198754;
+        }
+
+        .form-check {
+            margin-bottom: 0.5rem;
+            padding-left: 2rem;
+        }
+
+        .control-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+    </style>
 </head>
 
 <body>
@@ -63,11 +133,14 @@
     </div>
     <!-- Topbar End -->
     <!-- Inicio Seccion Modificable -->
-        <h1 class="d-flex justify-content-center mt-3">Gestión de Roles</h1>
-
     <div class="container">
+        <div class="booking-header text-center">
+            <h1>Gestión de Roles</h1>
+            <p class="lead">Editar rol existente en Caribbean Hotel</p>
+        </div>
+        
         <div class="row justify-content-center">
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-8">
                 <div class="roles-card">
                     <div class="roles-card-header d-flex justify-content-between align-items-center">
                         <div class="text-center flex-grow-1">
@@ -75,60 +148,61 @@
                         </div>
                     </div>
                     
-                    <div class="roles-card-body p-3">
-                        <div class="col-md-6 mx-auto">
-                            <form asp-action="Edit" id="editForm">
-                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                <input type="hidden" asp-for="IdRol" />
+                    <div class="roles-card-body p-4">
+                        <form asp-action="Edit" id="editForm">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="IdRol" />
 
-                                <div class="form-group mb-3">
-                                    <label asp-for="NombreRol" class="control-label">Rol</label>
-                                    <input asp-for="NombreRol" class="form-control" />
-                                    <span asp-validation-for="NombreRol" class="text-danger"></span>
+                            <div class="form-group mb-3">
+                                <label asp-for="NombreRol" class="control-label">Rol</label>
+                                <input asp-for="NombreRol" class="form-control" />
+                                <span asp-validation-for="NombreRol" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label asp-for="DescripcionRol" class="control-label">Descripción</label>
+                                <input asp-for="DescripcionRol" class="form-control" />
+                                <span asp-validation-for="DescripcionRol" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group mb-4">
+                                <label for="EstadoRol" class="control-label">Estado</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="EstadoRol" asp-for="EstadoRol" />
+                                    <span id="estadoLabel" class="ml-2">Inactivo</span>
                                 </div>
+                            </div>
 
-                                <div class="form-group mb-3">
-                                    <label asp-for="DescripcionRol" class="control-label">Descripción</label>
-                                    <input asp-for="DescripcionRol" class="form-control" />
-                                    <span asp-validation-for="DescripcionRol" class="text-danger"></span>
-                                </div>                                                                
-                                <div class="form-group d-inline-block justify-content-center">
-                                    <label for="EstadoRol" class="form-label">Estado</label>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="EstadoRol" asp-for="EstadoRol" />
-                                        <span id="estadoLabel" class="ml-2">Inactivo</span>
-                                    </div>
-                                </div>
-
-                                <div class="form-group mb-3">
-                                    <label>Permisos</label>
+                            <div class="form-group mb-4">
+                                <label class="control-label">Permisos</label>
+                                <div class="permissions-container">
                                     @foreach (var permiso in ViewBag.Permisos as List<Caribbean2.Models.Permiso>)
                                     {
                                         <div class="form-check">
                                             <input type="checkbox" class="form-check-input"
                                                    name="permisosSeleccionados"
                                                    value="@permiso.IdPermiso"
-                                            @(Model.Permisos != null && Model.Permisos.Any(p => p.IdPermiso == permiso.IdPermiso) ? "checked" : "") />
+                                                   @(Model.Permisos != null && Model.Permisos.Any(p => p.IdPermiso == permiso.IdPermiso) ? "checked" : "") />
                                             <label class="form-check-label">@permiso.NombrePermiso</label>
                                         </div>
                                     }
                                 </div>
+                            </div>
 
-                                <div class="form-group text-center mt-3">
-                                    <input type="submit" value="Guardar" class="btn btn-success" />
-                                    <a class="btn btn-secondary ms-2" asp-action="Index">
-                                        <i class="bi bi-arrow-left-circle"></i> Regresar
-                                    </a>
-                                </div>
-                            </form>
-                        </div>
+                            <div class="form-group text-center mt-4">
+                                <button type="submit" class="btn btn-success me-2">
+                                    <i class="bi bi-check-circle"></i> Guardar Cambios
+                                </button>
+                                <a asp-action="Index" class="btn btn-secondary">
+                                    <i class="bi bi-arrow-left-circle"></i> Regresar
+                                </a>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
 
     <!-- Fin Seccion Modificable -->
 

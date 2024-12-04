@@ -1,5 +1,4 @@
 ﻿@model Caribbean2.Models.Reserva
-
 @{
     ViewData["Title"] = "Edit";
     Layout = null;
@@ -10,156 +9,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sidebar</title>
+    <title>Editar Reserva</title>
     <link rel="stylesheet" href="~/css/sideBar.css">
     <link rel="stylesheet" href="~/css/roles.css">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/css/menuCentral.css">
-
-    <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
-
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
-
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- SweetAlert CSS -->
+    <link rel="stylesheet" href="~/css/Reservas.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <!-- SweetAlert JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .booking-header {
+            background: linear-gradient(rgba(30, 61, 89, 0.9), rgba(30, 61, 89, 0.9)),
+                        url('/images/hotel-bg.jpg') center/cover;
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+            border-radius: 10px;
+        }
+
+        .roles-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .roles-card-header {
+            background: linear-gradient(135deg, #1e3d59 0%, #2b5278 100%);
+            padding: 1.5rem;
+            border: none;
+        }
+
+        .roles-card-title {
+            color: white;
+            font-family: 'Playfair Display', serif;
+            margin: 0;
+        }
+
+        .form-control {
+            border: 2px solid #f1f4f8;
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-control:focus {
+            border-color: #1e3d59;
+            box-shadow: 0 0 0 0.2rem rgba(30, 61, 89, 0.25);
+        }
+
+        .btn-success {
+            background: #ff6e40;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-success:hover {
+            background: #ff5722;
+            transform: translateY(-2px);
+        }
+
+        .form-check-input:checked {
+            background-color: #198754;
+            border-color: #198754;
+        }
+    </style>
 </head>
 
 <body>
-
-    <!-- Topbar Start -->
-    <div class="container-fluid bg-dark px-5 d-lg-block d justify-content-around mb-2">
-        <div class="row gx-0 p-2 align-items-center">
-            <!-- Sección de botones visibles en pantallas pequeñas y grandes -->
-            <div class="btn-group-container d-flex justify-content-end">
-                <a class="btn-modern d-flex d-lg-none" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cerrar sesión"
-                   asp-controller="Usuarios" asp-action="Logout">
-                    <i class="fas fa-sign-out-alt"></i>
-                </a>
-
-                <a asp-controller="Usuarios" asp-action="Logout" class="btn-modern me-2 d-none d-lg-inline-flex">
-                    <i class="fas fa-sign-out-alt"></i> Cerrar sesión
-                </a>
-            </div>
-        </div>
-    </div>
-    <!-- Topbar End -->
-
-    <!-- Inicio Seccion Modificable -->
-    <h1 class="d-flex justify-content-center mt-3">Gestión de Reservas</h1>
-
     <div class="container">
+        <div class="booking-header text-center">
+            <h1>Gestión de Reservas</h1>
+            <p class="lead">Editar reserva existente en Caribbean Hotel</p>
+        </div>
+        
         <div class="row justify-content-center">
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-8">
                 <div class="roles-card">
                     <div class="roles-card-header d-flex justify-content-between align-items-center">
                         <div class="text-center flex-grow-1">
                             <h2 class="roles-card-title">Editar Reserva</h2>
                         </div>
                     </div>
-
                     <div class="roles-card-body p-3">
-                        <div class="col-md-6 mx-auto">
-                            <form asp-action="Edit" id="editForm">
-                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                <input type="hidden" asp-for="IdReserva" />
+                        <form asp-action="Edit" id="editForm">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="IdReserva" />
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="IdCliente" class="control-label">Cliente</label>
+                                        <select asp-for="IdCliente" class="form-control" asp-items="ViewBag.IdCliente"></select>
+                                        <span asp-validation-for="IdCliente" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="IdHuesped" class="control-label">Huésped</label>
+                                        <select asp-for="IdHuesped" class="form-control" asp-items="ViewBag.IdHuesped"></select>
+                                        <span asp-validation-for="IdHuesped" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="IdHabitacion" class="control-label">Habitación</label>
+                                        <select asp-for="IdHabitacion" class="form-control" asp-items="ViewBag.IdHabitacion"></select>
+                                        <span asp-validation-for="IdHabitacion" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="FechaInicio" class="control-label">Fecha de Inicio</label>
+                                        <input asp-for="FechaInicio" class="form-control" type="date" />
+                                        <span asp-validation-for="FechaInicio" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="FechaFin" class="control-label">Fecha de Fin</label>
+                                        <input asp-for="FechaFin" class="form-control" type="date" />
+                                        <span asp-validation-for="FechaFin" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="NumeroPersonas" class="control-label">Número de Personas</label>
+                                        <input asp-for="NumeroPersonas" class="form-control" type="number" min="1" />
+                                        <span asp-validation-for="NumeroPersonas" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
 
-                                <div class="form-group mb-3">
-                                    <label asp-for="IdCliente" class="control-label">Cliente</label>
-                                    <select asp-for="IdCliente" class="form-control" asp-items="ViewBag.IdCliente"></select>
-                                    <span asp-validation-for="IdCliente" class="text-danger"></span>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label asp-for="IdHuesped" class="control-label">Huésped</label>
-                                    <select asp-for="IdHuesped" class="form-control" asp-items="ViewBag.IdHuesped"></select>
-                                    <span asp-validation-for="IdHuesped" class="text-danger"></span>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label asp-for="IdHabitacion" class="control-label">Habitación</label>
-                                    <select asp-for="IdHabitacion" class="form-control" asp-items="ViewBag.IdHabitacion"></select>
-                                    <span asp-validation-for="IdHabitacion" class="text-danger"></span>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label asp-for="FechaInicio" class="control-label">Fecha de Inicio</label>
-                                    <input asp-for="FechaInicio" class="form-control" />
-                                    <span asp-validation-for="FechaInicio" class="text-danger"></span>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label asp-for="FechaFin" class="control-label">Fecha de Fin</label>
-                                    <input asp-for="FechaFin" class="form-control" />
-                                    <span asp-validation-for="FechaFin" class="text-danger"></span>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label asp-for="NumeroPersonas" class="control-label">Número de Personas</label>
-                                    <input asp-for="NumeroPersonas" class="form-control" />
-                                    <span asp-validation-for="NumeroPersonas" class="text-danger"></span>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label asp-for="PrecioTotal" class="control-label">Precio Total</label>
-                                    <input asp-for="PrecioTotal" class="form-control" />
-                                    <span asp-validation-for="PrecioTotal" class="text-danger"></span>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label asp-for="Anticipo" class="control-label">Anticipo</label>
-                                    <input asp-for="Anticipo" class="form-control" />
-                                    <span asp-validation-for="Anticipo" class="text-danger"></span>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label asp-for="IdEstado" class="control-label">Estado</label>
-                                    <select asp-for="IdEstado" class="form-control" asp-items="ViewBag.IdEstado"></select>
-                                    <span asp-validation-for="IdEstado" class="text-danger"></span>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label asp-for="Notas" class="control-label">Notas</label>
-                                    <textarea asp-for="Notas" class="form-control"></textarea>
-                                    <span asp-validation-for="Notas" class="text-danger"></span>
-                                </div>
+                            <div class="form-group">
+                                <label asp-for="Notas" class="control-label">Notas</label>
+                                <textarea asp-for="Notas" class="form-control" rows="3"></textarea>
+                                <span asp-validation-for="Notas" class="text-danger"></span>
+                            </div>
 
-                                <div class="form-group text-center mt-3">
-                                    <input type="submit" value="Guardar" class="btn btn-success" />
-                                    <a class="btn btn-secondary ms-2" asp-action="Index">
-                                        <i class="bi bi-arrow-left-circle"></i> Regresar
-                                    </a>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="PrecioTotal" class="control-label">Precio Total</label>
+                                        <input asp-for="PrecioTotal" class="form-control" type="number" step="0.01" />
+                                        <span asp-validation-for="PrecioTotal" class="text-danger"></span>
+                                    </div>
                                 </div>
-                            </form>
-                        </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Anticipo" class="control-label">Anticipo</label>
+                                        <input asp-for="Anticipo" class="form-control" type="number" step="0.01" />
+                                        <span asp-validation-for="Anticipo" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="IdEstado" class="control-label">Estado de la Reserva</label>
+                                <select asp-for="IdEstado" class="form-control" asp-items="ViewBag.IdEstado"></select>
+                                <span asp-validation-for="IdEstado" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group text-center mt-4">
+                                <button type="submit" class="btn btn-success me-2">
+                                    <i class="bi bi-check-circle"></i> Guardar Cambios
+                                </button>
+                                <a asp-action="Index" class="btn btn-secondary">
+                                    <i class="bi bi-arrow-left-circle"></i> Regresar
+                                </a>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Fin Seccion Modificable -->
-
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script src="~/js/index.js"></script>
-    <script src="~/js/login.js"></script>
-    <script src="~/js/sidebar.js"></script>
-    <script src="~/js/roles.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
     <script src="lib/tempusdominus/js/moment.min.js"></script>
     <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>

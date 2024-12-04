@@ -48,3 +48,5 @@ obj/project.assets.json
 obj/project.assets.json
 obj/Debug/net8.0/Caribbean2.genruntimeconfig.cache
 bin/Debug/net8.0/Caribbean2.staticwebassets.runtime.json
+bin/Debug/net8.0/Caribbean2.dll
+bin/Debug/net8.0/Caribbean2.exe

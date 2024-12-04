@@ -6,7 +6,7 @@
 }
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,104 +15,146 @@
     <link rel="stylesheet" href="~/css/roles.css">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/css/menuCentral.css">
-</head>
-<body>
-    <!-- Topbar Star -->
-        <div class="container-fluid bg-dark px-5 d-lg-block d justify-content-around mb-2">
-            <div class="row gx-0 p-2 align-items-center">
-                <!-- Sección de botones visibles en pantallas pequeñas y grandes -->
-                <div class="btn-group-container d-flex justify-content-end">
-                    <a class="btn-modern d-flex d-lg-none" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cerrar sesión"
-                    asp-controller="Usuarios" asp-action="Logout">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </a>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <style>
+        .booking-header {
+            background: linear-gradient(rgba(30, 61, 89, 0.9), rgba(30, 61, 89, 0.9)),
+                        url('/images/hotel-bg.jpg') center/cover;
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+            border-radius: 10px;
+        }
 
-                    <a asp-controller="Usuarios" asp-action="Logout" class="btn-modern me-2 d-none d-lg-inline-flex">
-                        <i class="fas fa-sign-out-alt"></i> Cerrar sesión
-                    </a>
-                </div>
-            </div>
-        </div>
-        <!-- Topbar End -->
-    <h1 class="d-flex justify-content-center mt-3">Detalles del Huésped</h1>
+        .roles-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .roles-card-header {
+            background: linear-gradient(135deg, #1e3d59 0%, #2b5278 100%);
+            padding: 1.5rem;
+            border: none;
+        }
+
+        .roles-card-title {
+            color: white;
+            font-family: 'Playfair Display', serif;
+            margin: 0;
+        }
+
+        .roles-card-body {
+            padding: 2rem;
+        }
+
+        dl.row {
+            margin-bottom: 0;
+        }
+
+        dt {
+            color: #1e3d59;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        dd {
+            color: #495057;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: #ff6e40;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #ff5722;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
     <div class="container">
+        <div class="booking-header text-center">
+            <h1>Gestión de Huéspedes</h1>
+            <p class="lead">Detalles del huésped en Caribbean Hotel</p>
+        </div>
+        
         <div class="row justify-content-center">
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-8">
                 <div class="roles-card">
-                    <div class="roles-card-header d-flex justify-content-between align-items-center">
-                        <div class="text-center flex-grow-1">
-                            <h2 class="roles-card-title">Detalles del Huésped</h2>
-                        </div>
+                    <div class="roles-card-header">
+                        <h2 class="roles-card-title text-center">Detalles del Huésped</h2>
                     </div>
-                    <div class="roles-card-body p-3">
+                    <div class="roles-card-body">
                         <dl class="row">
-                            <dt class="col-sm-2">
-                                Nombre
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.NombreCompleto)
-                            </dd>
-                            <dt class="col-sm-2">
-                                Correo
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.CorreoElectronico)
-                            </dd>
-                            <dt class="col-sm-2">
-                                Documento
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.TipoDocumento)
-                            </dd>
-                            <dt class="col-sm-2">
-                                Id
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.NumeroIdentificacion)
-                            </dd>
-                            <dt class="col-sm-2">
-                                Numero
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.NumeroContacto)
-                            </dd>
-                            <dt class="col-sm-2">
-                                Residencia
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.LugarResidencia)
-                            </dd>
-                            <dt class="col-sm-2">
-                                Fecha de llegada
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.FechaLlegada)
-                            </dd>
-                            <dt class="col-sm-2">
-                                Fecha de salida
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.FechaSalida)
-                            </dd>
-                            <dt class="col-sm-2">
-                                Estado
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.EstadoHuesped.NombreEstado)
-                            </dd>
+                            <dt class="col-sm-4">Nombre Completo</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.NombreCompleto)</dd>
+
+                            <dt class="col-sm-4">Correo Electrónico</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.CorreoElectronico)</dd>
+
+                            <dt class="col-sm-4">Tipo Documento</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.TipoDocumento)</dd>
+
+                            <dt class="col-sm-4">Identificación</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.NumeroIdentificacion)</dd>
+
+                            <dt class="col-sm-4">Número Contacto</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.NumeroContacto)</dd>
+
+                            <dt class="col-sm-4">Lugar Residencia</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.LugarResidencia)</dd>
+
+                            <dt class="col-sm-4">Fecha Llegada</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.FechaLlegada)</dd>
+
+                            <dt class="col-sm-4">Fecha Salida</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.FechaSalida)</dd>
+
+                            <dt class="col-sm-4">Estado</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.EstadoHuesped.NombreEstado)</dd>
                         </dl>
-                    </div>
-                    <div class="text-center mt-4">
-                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary me-2">
-                            <i class="bi bi-pencil-square"></i> Editar
-                        </a>
-                        <a asp-action="Index" class="btn btn-secondary">
-                            <i class="bi bi-arrow-left-circle"></i> Regresar
-                        </a>
+
+                        <div class="text-center mt-4">
+                            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary me-2">
+                                <i class="bi bi-pencil-square"></i> Editar
+                            </a>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left-circle"></i> Regresar
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

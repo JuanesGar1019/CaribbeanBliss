@@ -22,10 +22,8 @@
                             <th>Reserva</th>
                             <th>Cliente</th>
                             <th>Habitación</th>
-                            <th>Fecha Inicio</th>
-                            <th>Fecha Fin</th>
+
                             <th>N° Personas</th>
-                            <th>Precio Total</th>
                             <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
@@ -37,10 +35,9 @@
                                 <td>@Html.DisplayFor(modelItem => item.IdReserva)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Cliente.nombre)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Habitacion.Nombre)</td>
-                                <td>@item.FechaInicio.ToString("dd/MM/yyyy")</td>
-                                <td>@item.FechaFin.ToString("dd/MM/yyyy")</td>
+
                                 <td>@Html.DisplayFor(modelItem => item.NumeroPersonas)</td>
-                                <td>@Html.DisplayFor(modelItem => item.PrecioTotal)</td>
+
                                 <td>@Html.DisplayFor(modelItem => item.Estado.Nombre)</td>
                                 <td>
                                     <div class="action-buttons">

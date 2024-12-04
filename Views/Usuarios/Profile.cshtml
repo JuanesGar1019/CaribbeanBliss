@@ -14,12 +14,12 @@
 .profile-card {
     background: #fff;
     border-radius: 15px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    box-shadow: 0 0 20px rgba(0,0,0,0.08);
     overflow: hidden;
 }
 
 .profile-header {
-    background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%);
+    background: linear-gradient(135deg, #000306 0%, #2b5278 100%);
     color: white;
     padding: 2rem;
     text-align: center;
@@ -29,10 +29,13 @@
     margin: 0;
     font-size: 1.8rem;
     font-weight: 600;
+    font-family: 'Playfair Display', serif;
+    color: white;
 }
 
 .profile-body {
     padding: 2rem;
+    background: #f8f9fa;
 }
 
 .form-group {
@@ -42,32 +45,32 @@
 
 .form-group label {
     font-weight: 500;
-    color: #495057;
+    color: #1e3d59;
     margin-bottom: 0.5rem;
     display: block;
 }
 
 .form-control {
-    border: 2px solid #e9ecef;
+    border: 2px solid #f1f4f8;
     border-radius: 8px;
     padding: 0.75rem 1rem;
     transition: all 0.3s ease;
 }
 
 .form-control:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    border-color: #1e3d59;
+    box-shadow: 0 0 0 0.2rem rgba(30, 61, 89, 0.25);
 }
 
 .input-icon {
     position: absolute;
     right: 1rem;
     top: 2.5rem;
-    color: #6c757d;
+    color: #495057;
 }
 
 .btn-save {
-    background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%);
+    background: #1e3d59;
     border: none;
     border-radius: 8px;
     padding: 0.75rem 2rem;
@@ -75,35 +78,41 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     transition: all 0.3s ease;
+    color: white;
 }
 
 .btn-save:hover {
+    background: #ff5722;
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
+    box-shadow: 0 5px 15px rgba(255, 110, 64, 0.3);
 }
 
 .text-danger {
+    color: #dc3545;
     font-size: 0.875rem;
     margin-top: 0.25rem;
 }
 
 .form-text {
-    color: #6c757d;
+    color: #495057;
     font-size: 0.875rem;
-    margin-top: 0.25rem;
+}
+
+select.form-control {
+    background-color: #f8f9fa;
+}
+
+select.form-control:focus {
+    background-color: #fff;
 }
 
 @@media (max-width: 768px) {
     .profile-container {
         margin: 1rem auto;
     }
-    
-    .profile-header {
-        padding: 1.5rem;
-    }
-    
-    .profile-body {
-        padding: 1.5rem;
+
+    .btn-save {
+        width: 100%;
     }
 }
 </style>

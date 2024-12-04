@@ -25,5 +25,7 @@ namespace Caribbean2.Models
         public bool EstadoServicio { get; set; } = true;
 
         public virtual ICollection<Reserva> Reservas { get; set; }
+
+    
     }
 }

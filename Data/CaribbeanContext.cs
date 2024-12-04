@@ -56,6 +56,181 @@ public class CaribbeanContext : DbContext
                 IdRol = 3
             }
         );
+        
+        // Servicios predeterminados
+        modelBuilder.Entity<Servicio>().HasData(
+            new Servicio 
+            { 
+                IdServicio = 1, 
+                Nombre = "Paracaidismo", 
+                Descripcion = "Vive la emoción del paracaidismo con un salto en tándem. Disfruta de vistas impresionantes y la adrenalina de caer en caída libre, acompañado de un instructor experto. Un servicio único para quienes buscan una experiencia extrema y memorable, ¡haz realidad tu sueño de volar!", 
+                PrecioServicio = 99.99m, 
+                EstadoServicio = true 
+            },
+            new Servicio 
+            { 
+                IdServicio = 5, 
+                Nombre = "Viaje Personalizadas", 
+                Descripcion = "Recibe asesoramiento experto con nuestras guías de viaje personalizadas que te ayudarán a descubrir lo mejor del Caribe.", 
+                PrecioServicio = 69.99m, 
+                EstadoServicio = true 
+            },
+            new Servicio 
+            { 
+                IdServicio = 8, 
+                Nombre = "Transporte de Lujo", 
+                Descripcion = "Viaja con comodidad en nuestros vehículos de lujo, equipados para ofrecerte la mejor experiencia de transporte.", 
+                PrecioServicio = 49.99m, 
+                EstadoServicio = true 
+            },
+            new Servicio 
+            { 
+                IdServicio = 9, 
+                Nombre = "Parque acuático", 
+                Descripcion = "Diviértete en nuestro parque acuático, con emocionantes toboganes, piscinas de olas y zonas de relajación. Ideal para toda la familia, ofrece atracciones para todos los gustos, desde aventuras acuáticas hasta momentos de descanso. Ven y disfruta de un día lleno de diversión y frescura bajo el sol", 
+                PrecioServicio = 119.00m, 
+                EstadoServicio = true 
+            },
+            new Servicio 
+            { 
+                IdServicio = 10, 
+                Nombre = "Servicios de Spa", 
+                Descripcion = "Relájate y rejuvenece con nuestros servicios de spa de primera clase, diseñados para ofrecerte una experiencia de bienestar.", 
+                PrecioServicio = 39.99m, 
+                EstadoServicio = true 
+            },
+            new Servicio 
+            { 
+                IdServicio = 11, 
+                Nombre = "Cenas Gourmet", 
+                Descripcion = "Saborea una selección de platos gourmet preparados por chefs expertos, con ingredientes frescos y locales.", 
+                PrecioServicio = 59.99m, 
+                EstadoServicio = true 
+            }
+        );
+
+        // Habitaciones predeterminadas
+        modelBuilder.Entity<Habitacion>().HasData(
+            new Habitacion 
+            { 
+                IdHabitacion = 1, 
+                Nombre = "Deluxe", 
+                Descripcion = "Habitación Deluxe con diseño moderno, equipada con comodidades premium para una experiencia única de confort.", 
+                Capacidad = 2, 
+                PrecioHabitacion = 359.99m, 
+                IdEstado = 1 
+            },
+            new Habitacion 
+            { 
+                IdHabitacion = 2, 
+                Nombre = "Familiar", 
+                Descripcion = "Habitación ideal para familias, amplia y cómoda, con capacidad para grupos grandes y servicios adaptados a sus necesidades.", 
+                Capacidad = 8, 
+                PrecioHabitacion = 239.99m, 
+                IdEstado = 1 
+            },
+            new Habitacion 
+            { 
+                IdHabitacion = 3, 
+                Nombre = "Individual", 
+                Descripcion = "Habitación perfecta para una sola persona, diseñada para garantizar privacidad y un espacio acogedor.", 
+                Capacidad = 1, 
+                PrecioHabitacion = 119.99m, 
+                IdEstado = 1 
+            },
+            new Habitacion 
+            { 
+                IdHabitacion = 4, 
+                Nombre = "VIP", 
+                Descripcion = "Habitación VIP con servicios exclusivos, lujo excepcional y diseño elegante para huéspedes exigentes.", 
+                Capacidad = 2, 
+                PrecioHabitacion = 539.99m, 
+                IdEstado = 1 
+            }
+        );
+
+        // Estados de habitaciones predeterminados
+        modelBuilder.Entity<HabitacionEstado>().HasData(
+            new HabitacionEstado 
+            { 
+                IdEstado = 1, 
+                Nombre = "Disponible" 
+            },
+            new HabitacionEstado 
+            { 
+                IdEstado = 2, 
+                Nombre = "Ocupada" 
+            },
+            new HabitacionEstado 
+            { 
+                IdEstado = 3, 
+                Nombre = "Inhabilitada" 
+            }
+        );
+
+        // Estados de Huespedes predeterminados
+        modelBuilder.Entity<HuespedEstado>().HasData(
+            new HuespedEstado 
+            { 
+                IdEstadoHuesped = 1, 
+                NombreEstado = "Activo" 
+            },
+            new HuespedEstado 
+            { 
+                IdEstadoHuesped = 3, 
+                NombreEstado = "Proceso Check-Out" 
+            },
+            new HuespedEstado 
+            { 
+                IdEstadoHuesped = 4, 
+                NombreEstado = "Check-Out Completado" 
+            },
+            new HuespedEstado 
+            { 
+                IdEstadoHuesped = 5, 
+                NombreEstado = "Cancelado" 
+            },
+            new HuespedEstado 
+            { 
+                IdEstadoHuesped = 6, 
+                NombreEstado = "Aplazado" 
+            },
+            new HuespedEstado 
+            { 
+                IdEstadoHuesped = 7, 
+                NombreEstado = "Suspendido" 
+            }
+        );
+
+        modelBuilder.Entity<ReservaEstado>().HasData(
+            new ReservaEstado 
+            { 
+                IdEstado = 1, 
+                Nombre = "En Pendiente" 
+            },
+            new ReservaEstado 
+            { 
+                IdEstado = 2, 
+                Nombre = "Confirmada" 
+            },
+            new ReservaEstado 
+            { 
+                IdEstado = 3, 
+                Nombre = "En Progreso" 
+            },
+            new ReservaEstado 
+            { 
+                IdEstado = 4, 
+                Nombre = "Completada" 
+            },
+            new ReservaEstado 
+            { 
+                IdEstado = 5, 
+                Nombre = "Cancelada" 
+            }
+        );
+
+
 
         modelBuilder.Entity<Reserva>()
         .HasOne(r => r.Cliente)
@@ -199,7 +374,11 @@ public class CaribbeanContext : DbContext
             .HasForeignKey(e => e.RolId)
             .OnDelete(DeleteBehavior.Restrict); // Evita eliminación en cascada de empleados si el rol es eliminado
 
+            
+
         base.OnModelCreating(modelBuilder);
+
+        
     }
 }
 

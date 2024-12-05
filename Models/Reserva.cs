@@ -31,6 +31,7 @@ namespace Caribbean2.Models
 
         // Relación con Servicios (muchos a muchos)
         public virtual ICollection<Servicio> Servicios { get; set; } = new List<Servicio>();
+        public DateTime FechaReserva { get; set; } = DateTime.Now;
 
         [Required(ErrorMessage = "La fecha de inicio es obligatoria.")]
         [DataType(DataType.Date)]
@@ -53,7 +54,6 @@ namespace Caribbean2.Models
         [Required(ErrorMessage = "El anticipo es obligatorio.")]
         [Range(0.0, double.MaxValue, ErrorMessage = "El anticipo debe ser mayor o igual a 0.")]
         public decimal Anticipo { get; set; }
-
         public decimal ValorParcial => PrecioTotal - Anticipo; // Cálculo del valor pendiente
 
         [Required(ErrorMessage = "El estado de la reserva es obligatorio.")]

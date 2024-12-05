@@ -165,6 +165,16 @@
                                 </li>
                                 
                             }
+                            @if (userRoleId == 1)
+                            {
+                                <li>
+                                    <a asp-controller="ClientesReservas" asp-action="Index">
+                                        <ion-icon name="mail-outline"></ion-icon>
+                                        <span>Reservar</span>
+                                    </a>
+                                </li>
+                                
+                            }
                             @if (userRoleId == 2 || userRoleId == 3 || userRoleId == 4)
                             {
                                 <li>

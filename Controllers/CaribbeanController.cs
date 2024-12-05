@@ -73,6 +73,10 @@ namespace Caribbean2.Controllers
         {
             return View();
         }
+        public IActionResult ClientesReservas()
+        {
+            return View();
+        }
     }
 }
 

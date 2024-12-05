@@ -58,7 +58,7 @@
             <div class="form-box">
                 <!-- Login form -->
                 <div class="login-container" id="login">
-                    <span>¿Quieres Crear tu Cuenta? <a href="#" onclick="showRegister()" style="color: white; text-decoration: underline;">Registrarse</a></span>
+                    <span style="color: white;">¿Quieres Crear tu Cuenta? <a href="#" onclick="showRegister()" style="color: rgb(130, 201, 86); text-decoration: underline;">Registrarse</a></span>
                     <header>Inicio de sesión</header>
 
                     <div class="avatar-container">
@@ -76,6 +76,7 @@
                         </div>
 
                         <div class="input-box">
+                            <i class="fa-solid fa-lock"></i>
                             <input type="password" 
                                    name="Contrasena" 
                                    class="input-field" 
@@ -90,7 +91,7 @@
                         
                         <!-- Agregar enlace de recuperación de contraseña -->
                         <div class="forgot-link">
-                            <a href="#" onclick="showForgotPassword()" style="color: white; text-decoration: underline;">
+                            <a href="#" onclick="showForgotPassword()" style="color: rgb(130, 201, 86); text-decoration: underline;">
                                 ¿Olvidaste tu contraseña?
                             </a>
                         </div>
@@ -111,7 +112,7 @@
                         <div class="input-box">
                             <i class="fa-regular fa-user"></i>
                             <input asp-for="NombreUsuario" class="input-field" placeholder="Nombre de Usuario">
-                            <span asp-validation-for="NombreUsuario" class="text-danger validation-message"></span>
+                            <span asp-validation-for="NombreUsuario" class="field-validation-error"></span>
                         </div>
 
                         <div class="input-box-group">
@@ -125,36 +126,39 @@
                                     <option value="PAS">Pasaporte</option>
                                     <option value="NIT">NIT</option>
                                 </select>
-                                <span asp-validation-for="TipoIdentificacion" class="text-danger validation-message"></span>
+                                <span asp-validation-for="TipoIdentificacion" class="field-validation-error"></span>
                             </div>
 
                             <div class="input-box">
                                 <i class="fa-regular fa-id-card"></i>
                                 <input asp-for="Identificacion" class="input-field" placeholder="Identificación">
-                                <span asp-validation-for="Identificacion" class="text-danger validation-message"></span>
+                                <span asp-validation-for="Identificacion" class="field-validation-error"></span>
                             </div>
                         </div>
 
                         <div class="input-box">
                             <i class="fa-solid fa-phone-volume"></i>
                             <input asp-for="Telefono" class="input-field" placeholder="Telefono">
-                            <span asp-validation-for="Telefono" class="text-danger validation-message"></span>
+                            <span asp-validation-for="Telefono" class="field-validation-error"></span>
                         </div>
 
                         <div class="input-box">
                             <i class="fa-regular fa-envelope"></i>
                             <input asp-for="Correo" class="input-field" placeholder="Correo">
-                            <span asp-validation-for="Correo" class="text-danger validation-message"></span>
+                            <span asp-validation-for="Correo" class="field-validation-error"></span>
                         </div>
 
                         <div class="input-box">
+                            <i class="fa-solid fa-lock"></i>
                             <input asp-for="Contrasena" type="password" class="input-field" placeholder="Contraseña">
                             <i class="fa fa-eye toggle-password" onclick="togglePasswordVisibility(this)"></i>
-                            <span asp-validation-for="Contrasena" class="text-danger validation-message"></span>
+                            <span asp-validation-for="Contrasena" class="field-validation-error"></span>
                         </div>
                         <div class="input-box">
+                            <i class="fa-solid fa-lock"></i>
                             <input asp-for="ConfirmarContrasena" type="password" class="input-field" placeholder="Confirmar Contraseña">
-                            <span asp-validation-for="ConfirmarContrasena" class="text-danger validation-message"></span>
+                               <i class="fa fa-eye toggle-password" onclick="togglePasswordVisibility(this)"></i>
+                            <span asp-validation-for="ConfirmarContrasena" class="field-validation-error"></span>
                         </div>
 
                         <div class="input-box">
@@ -167,7 +171,7 @@
                 <div class="forgot-password-container" id="forgotPassword">
                     <div class="top">
                         <span style="color: black;">
-                            <a href="#" onclick="showLogin()" style="color: white; text-decoration: underline;">Volver al login</a>
+                            <a href="#" onclick="showLogin()" style="color: rgb(130, 201, 86); text-decoration: underline;">Volver al login</a>
                         </span>
                         <header>Recuperar contraseña</header> <!-- Cambiado a minúsculas -->
                     </div>

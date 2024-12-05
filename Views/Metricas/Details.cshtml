@@ -6,207 +6,195 @@
 }
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sidebar</title>
+    <title>Detalles de Métrica</title>
     <link rel="stylesheet" href="~/css/sideBar.css">
     <link rel="stylesheet" href="~/css/roles.css">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/css/menuCentral.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <style>
+                      body {
+    position: relative;
+    min-height: 100vh;
+}
 
-    <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/img/imgpagina.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.; /* Reduced opacity for darker effect */
+    z-index: -1;
+    filter: brightness(0.5) contrast(1.2); /* Reduced brightness for darker image */
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+}   
+        .booking-header {
+            background: linear-gradient(rgba(30, 61, 89, 0.9), rgba(30, 61, 89, 0.9)),
+                        url('/images/hotel-bg.jpg') center/cover;
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+            border-radius: 10px;
+        }
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+        .roles-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
 
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        .roles-card-header {
+            background: linear-gradient(135deg, #1e3d59 0%, #2b5278 100%);
+            padding: 1.5rem;
+            border: none;
+        }
 
+        .roles-card-title {
+            color: white;
+            font-family: 'Playfair Display', serif;
+            margin: 0;
+        }
 
-    <!-- Libraries Stylesheet -->
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+        .roles-card-body {
+            padding: 2rem;
+        }
 
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+        dl.row {
+            margin-bottom: 0;
+        }
+
+        dt {
+            color: #1e3d59;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+        }
+
+        dd {
+            color: #495057;
+            background: #f8f9fa;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            margin-bottom: 1rem;
+        }
+
+        .btn-primary {
+            background: #ff6e40;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #ff5722;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
 
 <body>
-
-    <!-- Topbar Star -->
-    <div class="container-fluid bg-dark px-5 d-lg-block d justify-content-around mb-2">
-        <div class="row gx-0 p-2 align-items-center">
-            <!-- Sección de botones visibles en pantallas pequeñas y grandes -->
-            <div class="btn-group-container d-flex justify-content-end">
-                <a class="btn-modern d-flex d-lg-none" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cerrar sesión"
-                   asp-controller="Usuarios" asp-action="Logout">
-                    <i class="fas fa-sign-out-alt"></i>
-                </a>
-
-                <a asp-controller="Usuarios" asp-action="Logout" class="btn-modern me-2 d-none d-lg-inline-flex">
-                    <i class="fas fa-sign-out-alt"></i> Cerrar sesión
-                </a>
-            </div>
-        </div>
-    </div>
-    <!-- Topbar End -->
-    <!-- Inicio Seccion Modificable -->
-    <h1 class="d-flex justify-content-center mt-3">Gestión de Métricas</h1>
-
     <div class="container">
+        <div class="booking-header text-center">
+            <h1 style="color: white;">Gestión de Métricas</h1>
+            <p class="lead">Detalles de la métrica en Caribbean Hotel</p>
+        </div>
+        
         <div class="row justify-content-center">
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-8">
                 <div class="roles-card">
-                    <div class="roles-card-header d-flex justify-content-between align-items-center">
-                        <div class="text-center flex-grow-1">
-                            <h2 class="roles-card-title">Detalles del Registro</h2>
-                        </div>
+                    <div class="roles-card-header">
+                        <h2 class="roles-card-title text-center">Detalles de la Métrica</h2>
                     </div>
-                    <div class="roles-card-body p-3">
+                    <div class="roles-card-body">
                         <dl class="row">
-                            <dt class="col-sm-2 me-2">
-                                Fecha
-                            </dt>
-                            <dd class="col-sm-10 me-2">
-                                @Html.DisplayFor(model => model.Fecha)
-                            </dd>
-                            <dt class="col-sm-2 me-2">
-                                Ingresos
-                            </dt>
-                            <dd class="col-sm-10 me-2">
-                                @Html.DisplayFor(model => model.IngresosTotales)
-                            </dd>
-                            <dt class="col-sm-2 me-2">
-                                Tasa Ocupación
-                            </dt>
-                            <dd class="col-sm-10 me-2">
-                                @Html.DisplayFor(model => model.TasaOcupacion)%
-                            </dd>
-                            <dt class = "col-sm-2 me-2">
-                                Ocupación Diaria
-                            </dt>
-                            <dd class="col-sm-10 me-2">
-                                @Html.DisplayFor(model => model.OcupacionDiaria)
-                            </dd>
-                            <dt class="col-sm-2 me-2">
-                                Ocupación Semanal
-                            </dt>
-                            <dd class="col-sm-10 me-2">
-                                @Html.DisplayFor(model => model.OcupacionSemanal)
-                            </dd>
-                            <dt class="col-sm-2 me-2">
-                                Ocupación Mensual
-                            </dt>
-                            <dd class="col-sm-10 me-2">
-                                @Html.DisplayFor(model => model.OcupacionMensual)
-                            </dd>
-                            <dt class="col-sm-2 me-2">
-                                Reservas Nuevas
-                            </dt>
-                            <dd class="col-sm-10 me-2">
-                                @Html.DisplayFor(model => model.ReservasNuevas)
-                            </dd>
-                            <dt class="col-sm-2 me-2">
-                                Cancelaciones
-                            </dt>
-                            <dd class="col-sm-10 me-2">
-                                @Html.DisplayFor(model => model.Cancelaciones)
-                            </dd>
-                            <dt class="col-sm-2 me-2">
-                                Impacto Cancelaciones
-                            </dt>
-                            <dd class="col-sm-10 me-2">
-                                @Html.DisplayFor(model => model.ImpactoFinancieroCancelaciones)
-                            </dd>
-                            <dt class="col-sm-2 me-2">
-                                Promedio Anticipación Reserva
-                            </dt>
-                            <dd class="col-sm-10 me-2">
-                                @Html.DisplayFor(model => model.PromedioDiasAnticipacionReserva)
-                            </dd>
-                            <dt class = "col-sm-2 me-2">
-                                Número Huespedes
-                            </dt>
-                            <dd class="col-sm-10 me-2">
-                                @Html.DisplayFor(model => model.NumeroHuespedes)
-                            </dd>
-                            <dt class="col-sm-2 me-2">
-                                Suscritos
-                            </dt>
-                            <dd class="col-sm-10 me-2">
-                                @Html.DisplayFor(model => model.SuscritosBoletin)
-                            </dd>
-                            <dt class="col-sm-2 me-2">
-                                Promedio Estadía
-                            </dt>
-                            <dd class="col-sm-10 me-2">
-                                @Html.DisplayFor(model => model.DuracionPromedioEstadia)
-                            </dd>
+                            <dt class="col-sm-4">Fecha</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.Fecha)</dd>
+
+                            <dt class="col-sm-4">Ingresos Totales</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.IngresosTotales)</dd>
+
+                            <dt class="col-sm-4">Tasa Ocupación</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.TasaOcupacion)%</dd>
+
+                            <dt class="col-sm-4">Ocupación Diaria</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.OcupacionDiaria)</dd>
+
+                            <dt class="col-sm-4">Ocupación Semanal</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.OcupacionSemanal)</dd>
+
+                            <dt class="col-sm-4">Ocupación Mensual</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.OcupacionMensual)</dd>
+
+                            <dt class="col-sm-4">Reservas Nuevas</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.ReservasNuevas)</dd>
+
+                            <dt class="col-sm-4">Cancelaciones</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.Cancelaciones)</dd>
+
+                            <dt class="col-sm-4">Impacto Financiero</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.ImpactoFinancieroCancelaciones)</dd>
+
+                            <dt class="col-sm-4">Días Promedio Anticipación</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.PromedioDiasAnticipacionReserva)</dd>
+
+                            <dt class="col-sm-4">Número Huéspedes</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.NumeroHuespedes)</dd>
+
+                            <dt class="col-sm-4">Suscritos al Boletín</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.SuscritosBoletin)</dd>
+
+                            <dt class="col-sm-4">Promedio Estadía</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.DuracionPromedioEstadia) días</dd>
                         </dl>
-                    </div>                    
-                    <div class="text-center mt-4">
-                        <a asp-action="Edit" asp-route-id="@Model?.IdMetrica" class="btn btn-primary me-2">
-                            <i class="bi bi-pencil-square"></i> Editar
-                        </a>
-                        <a asp-action="Index" class="btn btn-secondary">
-                            <i class="bi bi-arrow-left-circle"></i> Regresar
-                        </a>
+
+                        <div class="text-center mt-4">
+                            <a asp-action="Edit" asp-route-id="@Model?.IdMetrica" class="btn btn-primary me-2">
+                                <i class="bi bi-pencil-square"></i> Editar
+                            </a>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left-circle"></i> Regresar
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    </div>
 
-
-
-
-    <!-- Fin Seccion Modificable -->
-
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script src="~/js/index.js"></script>
-    <script src="~/js/login.js"></script>
-    <script src="~/js/sidebar.js"></script>
-    <script src="~/js/roles.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/tempusdominus/js/moment.min.js"></script>
-    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Actualiza los labels al cargar la página
-            document.querySelectorAll('.form-check-input').forEach(function (switchInput) {
-                updateEstadoLabel(switchInput);
-            });
-        });
-
-        // Función para actualizar el texto del label según el estado del switch
-        function updateEstadoLabel(switchInput) {
-            var label = switchInput.nextElementSibling;
-            if (switchInput.checked) {
-                label.textContent = "Activado";
-                label.style.color = "green";  // Cambia el color de "Activado" a verde
-            } else {
-                label.textContent = "Inactivo";
-                label.style.color = "red";  // Cambia el color de "Inactivo" a rojo
-            }
-        }
-    </script>
-
 </body>
-
 </html>
-

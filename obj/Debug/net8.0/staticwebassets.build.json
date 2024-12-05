@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "IFt/o3jDM8C7IJvgJvBrevRwEG9LOvJVSx4jHLKYpHc=",
+  "Hash": "LLtCyevbw5l91IMFubo/THOBLIX8Ui7RPz7eESPtiSI=",
   "Source": "Caribbean2",
   "BasePath": "_content/Caribbean2",
   "Mode": "Default",
@@ -471,6 +471,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\img\\destination-4.jpg"
+    },
+    {
+      "Identity": "C:\\Caribbeannnnnn blissss gitttttt\\CaribbeanBliss\\wwwroot\\img\\imgpagina.jpg",
+      "SourceId": "Caribbean2",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Caribbeannnnnn blissss gitttttt\\CaribbeanBliss\\wwwroot\\",
+      "BasePath": "_content/Caribbean2",
+      "RelativePath": "img/imgpagina.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\img\\imgpagina.jpg"
     },
     {
       "Identity": "C:\\Caribbeannnnnn blissss gitttttt\\CaribbeanBliss\\wwwroot\\img\\login.jpg",

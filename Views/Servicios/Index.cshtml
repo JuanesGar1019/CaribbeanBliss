@@ -7,7 +7,7 @@
 
 <div class="reservation-container">
     <div class="container">
-        <h1 class="text-center mb-4" style="color: #1e3d59; font-family: 'Playfair Display', serif;">
+        <h1 class="text-center mb-4" style="color: #ffffff; font-family: 'Playfair Display', serif;">
             Gestión de Servicios
         </h1>
         <div class="card">
@@ -41,15 +41,17 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <a asp-action="Edit" asp-route-id="@item.IdServicio" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Editar">
-                                        <ion-icon name="pencil-outline"></ion-icon>
-                                    </a>
-                                    <a asp-action="Details" asp-route-id="@item.IdServicio" class="btn btn-sm btn-info" data-bs-toggle="tooltip" title="Detalles">
-                                        <ion-icon name="eye-outline"></ion-icon>
-                                    </a>
-                                    <a asp-action="Delete" asp-route-id="@item.IdServicio" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Eliminar">
-                                        <ion-icon name="trash-outline"></ion-icon>
-                                    </a>
+                                    <div class="action-buttons">
+                                        <a asp-action="Edit" asp-route-id="@item.IdServicio" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Editar">
+                                            <ion-icon name="pencil-outline"></ion-icon>
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.IdServicio" class="btn btn-sm btn-info" data-bs-toggle="tooltip" title="Detalles">
+                                            <ion-icon name="eye-outline"></ion-icon>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.IdServicio" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Eliminar">
+                                            <ion-icon name="trash-outline"></ion-icon>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         }
@@ -89,8 +91,31 @@
 }
 
 <style>
+                  body {
+    position: relative;
+    min-height: 100vh;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/img/imgpagina.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.; /* Reduced opacity for darker effect */
+    z-index: -1;
+    filter: brightness(0.5) contrast(1.2); /* Reduced brightness for darker image */
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+}   
 .reservation-container {
-    background: #f8f9fa;
+
     padding: 2rem 0;
 }
 
@@ -155,6 +180,39 @@
     vertical-align: middle;
     color: #495057;
     border-color: #f1f4f8;
+}
+
+/* Contenedor de botones */
+td .action-buttons {
+    display: flex;
+    gap: 10px; /* Aumentar espacio entre botones */
+    justify-content: flex-start;
+    align-items: center;
+}
+
+/* Ajuste de botones */
+.btn-sm {
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+
+/* Ajuste de columna de acciones */
+.table th:last-child,
+.table td:last-child {
+    min-width: 140px; /* Aumentar espacio para botones más grandes */
+    white-space: nowrap;
+}
+
+/* Ajuste de íconos */
+ion-icon {
+    font-size: 20px; /* Aumentar tamaño de íconos */
+    width: 20px;
+    height: 20px;
 }
 
 .btn-sm {

@@ -7,7 +7,7 @@
 
 <div class="reservation-container">
     <div class="container">
-        <h1 class="text-center mb-4" style="color: #1e3d59; font-family: 'Playfair Display', serif;">
+        <h1 class="text-center mb-4" style="color: #ffffff; font-family: 'Playfair Display', serif;">
             Gestión de Reservas
         </h1>
         <div class="card">
@@ -22,10 +22,8 @@
                             <th>Reserva</th>
                             <th>Cliente</th>
                             <th>Habitación</th>
-                            <th>Fecha Inicio</th>
-                            <th>Fecha Fin</th>
+
                             <th>N° Personas</th>
-                            <th>Precio Total</th>
                             <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
@@ -37,10 +35,9 @@
                                 <td>@Html.DisplayFor(modelItem => item.IdReserva)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Cliente.nombre)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Habitacion.Nombre)</td>
-                                <td>@item.FechaInicio.ToString("dd/MM/yyyy")</td>
-                                <td>@item.FechaFin.ToString("dd/MM/yyyy")</td>
+
                                 <td>@Html.DisplayFor(modelItem => item.NumeroPersonas)</td>
-                                <td>@Html.DisplayFor(modelItem => item.PrecioTotal)</td>
+
                                 <td>@Html.DisplayFor(modelItem => item.Estado.Nombre)</td>
                                 <td>
                                     <div class="action-buttons">
@@ -94,9 +91,32 @@
 
 <style>
 /* Add this to your site.css or create hotel-tables.css */
+              body {
+    position: relative;
+    min-height: 100vh;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/img/imgpagina.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.; /* Reduced opacity for darker effect */
+    z-index: -1;
+    filter: brightness(0.5) contrast(1.2); /* Reduced brightness for darker image */
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+}   
 
 .reservation-container {
-    background: #f8f9fa;
+
     padding: 2rem 0;
 }
 
@@ -120,7 +140,7 @@
 }
 
 .btn-primary {
-    background: #ff6e40;
+    background: #111141;
     border: none;
     padding: 0.6rem 1.2rem;
     border-radius: 8px;
@@ -128,7 +148,7 @@
 }
 
 .btn-primary:hover {
-    background: #ff5722;
+    background: #072468;
     transform: translateY(-2px);
 }
 

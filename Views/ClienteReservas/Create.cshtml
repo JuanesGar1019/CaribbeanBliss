@@ -112,15 +112,15 @@
                             </div>
                             <div class="form-group">
                                 <label asp-for="TipoDocumento" class="control-label">Tipo de Documento</label>
-                                <input asp-for="TipoDocumento" class="form-control" />
                                 <select asp-for="TipoDocumento" class="form-control">
-                                            <option value="" disabled selected>Seleccione un tipo</option>
-                                            <option value="CC">Cédula de Ciudadanía</option>
-                                            <option value="TI">Tarjeta de Identidad</option>
-                                            <option value="CE">Cédula de Extranjería</option>
-                                            <option value="PAS">Pasaporte</option>
-                                            <option value="NIT">NIT</option>
-                                        </select>
+                                    <option value="" disabled selected>Seleccione un tipo</option>
+                                    <option value="CC">Cédula de Ciudadanía</option>
+                                    <option value="TI">Tarjeta de Identidad</option>
+                                    <option value="CE">Cédula de Extranjería</option>
+                                    <option value="PAS">Pasaporte</option>
+                                    <option value="NIT">NIT</option>
+                                </select>
+                                <span asp-validation-for="TipoDocumento" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="NumeroDocumento" class="control-label">Número de Documento</label>
@@ -129,17 +129,29 @@
                             </div>
                             <div class="form-group">
                                 <label asp-for="fechaLlegada" class="control-label">Fecha de Llegada</label>
-                                <input asp-for="fechaLlegada" class="form-control" />
+                                <input asp-for="fechaLlegada" class="form-control" type="date" />
                                 <span asp-validation-for="fechaLlegada" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="fechaSalida" class="control-label">Fecha de Salida</label>
-                                <input asp-for="fechaSalida" class="form-control" />
+                                <input asp-for="fechaSalida" class="form-control" type="date" />
                                 <span asp-validation-for="fechaSalida" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="IdHabitacion" class="control-label">ID de Habitación</label>
-                                <input asp-for="IdHabitacion" class="form-control" />
+                                <select asp-for="IdHabitacion" class="form-control">
+                                    @if (ViewBag.IdHabitacion != null && ViewBag.IdHabitacion.Count > 0)
+                                    {
+                                        @foreach (var item in ViewBag.IdHabitacion)
+                                        {
+                                            <option value="@item.Value" data-precio="@item.Text.Split('-')[1].Trim().Replace("$", "").Replace(",", "")">@item.Text</option>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <option value="">No hay habitaciones disponibles</option>
+                                    }
+                                </select>
                                 <span asp-validation-for="IdHabitacion" class="text-danger"></span>
                             </div>
                             <div class="form-group">
@@ -149,14 +161,14 @@
                             </div>
                             <div class="form-group">
                                 <label asp-for="PrecioTotal" class="control-label">Precio Total</label>
-                                <input asp-for="PrecioTotal" class="form-control" />
+                                <input asp-for="PrecioTotal" class="form-control" readonly />
                                 <span asp-validation-for="PrecioTotal" class="text-danger"></span>
                             </div>
                             <div class="form-group text-center mt-4">
                                 <button type="submit" class="btn btn-success me-2">
                                     <i class="bi bi-check-circle"></i> Crear
                                 </button>
-                                <a asp-action="Index" class="btn btn-secondary">
+                                <a asp-action="Index" class="btn btn-secondary"></a>
                                     <i class="bi bi-arrow-left-circle"></i> Regresar
                                 </a>
                             </div>

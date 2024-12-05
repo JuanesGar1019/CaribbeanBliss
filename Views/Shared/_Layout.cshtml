@@ -168,12 +168,11 @@
                             @if (userRoleId == 1)
                             {
                                 <li>
-                                    <a asp-controller="ClientesReservas" asp-action="Index">
+                                    <a asp-controller="ClienteReservas" asp-action="Index">
                                         <ion-icon name="mail-outline"></ion-icon>
                                         <span>Reservar</span>
                                     </a>
                                 </li>
-                                
                             }
                             @if (userRoleId == 2 || userRoleId == 3 || userRoleId == 4)
                             {
@@ -288,7 +287,7 @@
             </div>
 
         </div>
-            <div class="container-fluid" style="background-color: black;">
+            <div class="container-fluid" style="background: linear-gradient(135deg, #000306 0%, #2b5278 100%);">
                 <div class="row gx-0">
                     <!-- Sección de botones visibles en pantallas pequeñas y grandes -->
                     <div class="btn-group-container d-flex justify-content-end p-2">

@@ -19,6 +19,9 @@ public class Habitacion
     [Required(ErrorMessage = "La capacidad es obligatoria")]
     public int Capacidad { get; set; }
 
+    [Required(ErrorMessage = "El número de la habitación es obligatorio")]
+    public int NumeroHabitacion { get; set; }
+
     [Required(ErrorMessage = "El precio de la habitación es obligatorio")]
     [Column(TypeName = "money")]
     public decimal PrecioHabitacion { get; set; }

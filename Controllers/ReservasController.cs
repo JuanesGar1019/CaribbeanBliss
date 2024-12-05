@@ -17,11 +17,18 @@ namespace Caribbean2.Controllers
         {
             _context = context;
         }
+
         [RoleAuthorize(2, 3, 4)]
         // GET: Reservas
         public async Task<IActionResult> Index()
         {
-            var caribbeanContext = _context.Reservas.Include(r => r.Cliente).Include(r => r.Estado).Include(r => r.Habitacion).Include(r => r.Huesped);
+            var caribbeanContext = _context.Reservas
+                .Include(r => r.Cliente)
+                .Include(r => r.Habitacion)
+                .Include(r => r.Estado)
+                .Include(r => r.Huespedes)
+                .Include(r => r.Servicios)
+                .Include(r => r.Pagos);
             return View(await caribbeanContext.ToListAsync());
         }
 
@@ -35,9 +42,11 @@ namespace Caribbean2.Controllers
 
             var reserva = await _context.Reservas
                 .Include(r => r.Cliente)
-                .Include(r => r.Estado)
                 .Include(r => r.Habitacion)
-                .Include(r => r.Huesped)
+                .Include(r => r.Estado)
+                .Include(r => r.Huespedes)
+                .Include(r => r.Servicios)
+                .Include(r => r.Pagos)
                 .FirstOrDefaultAsync(m => m.IdReserva == id);
             if (reserva == null)
             {
@@ -50,40 +59,98 @@ namespace Caribbean2.Controllers
         // GET: Reservas/Create
         public IActionResult Create()
         {
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "idCliente", "nombre");
-            ViewData["IdEstado"] = new SelectList(_context.ReservaEstados, "IdEstado", "Nombre");
-            ViewData["IdHabitacion"] = _context.Habitaciones.Select(h => new SelectListItem
+            try 
             {
-                Value = h.IdHabitacion.ToString(),
-                Text = $"{h.Nombre} - {h.PrecioHabitacion:C}"
-            }).ToList();
-            ViewData["IdHuesped"] = new SelectList(_context.Huespedes, "Id", "NombreCompleto");
-            ViewData["ServiciosActivos"] = _context.Servicios.Where(s => s.EstadoServicio == true).ToList();
-            return View();
+                var clientes = _context.Clientes
+                    .Where(c => c.ClienteEstado)
+                    .ToList();
+                var habitaciones = _context.Habitaciones
+                    .Where(h => h.IdEstado == 1)
+                    .ToList();
+                var huespedes = _context.Huespedes.ToList();
+                var estados = _context.ReservaEstados.ToList();
+                var serviciosActivos = _context.Servicios
+                    .Where(s => s.EstadoServicio)
+                    .ToList();
+
+                // Validar que existan datos
+                if (!clientes.Any())
+                    ModelState.AddModelError("", "No hay clientes disponibles");
+                if (!habitaciones.Any())
+                    ModelState.AddModelError("", "No hay habitaciones disponibles");
+                if (!huespedes.Any())
+                    ModelState.AddModelError("", "No hay huéspedes disponibles");
+                if (!estados.Any())
+                    ModelState.AddModelError("", "No hay estados disponibles");
+                if (!serviciosActivos.Any())
+                    ModelState.AddModelError("", "No hay servicios disponibles");
+
+                // Corregir los nombres de las propiedades según el modelo Cliente
+                ViewBag.IdCliente = new SelectList(clientes, "idCliente", "nombre");
+                ViewBag.IdHabitacion = new SelectList(habitaciones.Select(h => new
+                {
+                    IdHabitacion = h.IdHabitacion,
+                    DisplayText = $"Habitación {h.NumeroHabitacion} - {h.Nombre} - Precio: ${h.PrecioHabitacion}",
+                    h.Capacidad
+                }), "IdHabitacion", "DisplayText");
+                ViewBag.Huespedes = new MultiSelectList(huespedes, "Id", "NombreCompleto");
+                ViewBag.IdEstado = new SelectList(estados, "IdEstado", "Nombre");
+                ViewBag.ServiciosActivos = serviciosActivos;
+
+                ViewBag.HabitacionesCapacidad = habitaciones.ToDictionary(h => h.IdHabitacion, h => h.Capacidad);
+
+                return View();
+            }
+            catch (Exception ex)
+            {
+                // Log the error
+                ModelState.AddModelError("", "Ocurrió un error al cargar los datos" + ex);
+                return View();
+            }
         }
 
         // POST: Reservas/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdReserva,IdCliente,IdHuesped,IdHabitacion,FechaInicio,FechaFin,NumeroPersonas,PrecioTotal,Anticipo,Notas")] Reserva reserva, int[] ServiciosSeleccionados)
+        public async Task<IActionResult> Create([Bind("IdReserva,IdCliente,IdHabitacion,FechaInicio,FechaFin,NumeroPersonas,PrecioTotal,Anticipo,Notas,IdEstado")] Reserva reserva, int[] HuespedesSeleccionados, int[] ServiciosSeleccionados)
         {
             if (ModelState.IsValid)
             {
-                // Asignar IdEstado a 1 por defecto
-                reserva.IdEstado = 1;
+                // Validar capacidad de la habitación
+                var habitacion = await _context.Habitaciones.FindAsync(reserva.IdHabitacion);
+                if (habitacion != null && reserva.NumeroPersonas > habitacion.Capacidad)
+                {
+                    ModelState.AddModelError("NumeroPersonas", "El número de personas excede la capacidad de la habitación");
+                    return View(reserva);
+                }
 
-                reserva.Servicios = await _context.Servicios.Where(s => ServiciosSeleccionados.Contains(s.IdServicio)).ToListAsync();
+                foreach (var huespedId in HuespedesSeleccionados)
+                {
+                    var huesped = await _context.Huespedes.FindAsync(huespedId);
+                    if (huesped != null)
+                    {
+                        reserva.Huespedes.Add(huesped);
+                    }
+                }
+
+                foreach (var servicioId in ServiciosSeleccionados)
+                {
+                    var servicio = await _context.Servicios.FindAsync(servicioId);
+                    if (servicio != null)
+                    {
+                        reserva.Servicios.Add(servicio);
+                    }
+                }
+
                 _context.Add(reserva);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "idCliente", "nombre", reserva.IdCliente);
-            ViewData["IdEstado"] = new SelectList(_context.ReservaEstados, "IdEstado", "Nombre", reserva.IdEstado);
-            ViewData["IdHabitacion"] = new SelectList(_context.Habitaciones, "IdHabitacion", "Nombre", reserva.IdHabitacion);
-            ViewData["IdHuesped"] = new SelectList(_context.Huespedes, "Id", "CorreoElectronico", reserva.IdHuesped);
-            ViewData["ServiciosActivos"] = _context.Servicios.Where(s => s.EstadoServicio == true).ToList();
+            ViewBag.IdCliente = new SelectList(_context.Clientes, "IdCliente", "NombreCompleto", reserva.IdCliente);
+            ViewBag.IdHabitacion = new SelectList(_context.Habitaciones, "IdHabitacion", "NumeroHabitacion", reserva.IdHabitacion);
+            ViewBag.Huespedes = new SelectList(_context.Huespedes, "Id", "NombreCompleto");
+            ViewBag.IdEstado = new SelectList(_context.ReservaEstados, "IdEstado", "Nombre", reserva.IdEstado);
+            ViewBag.ServiciosActivos = _context.Servicios.Where(s => s.EstadoServicio.Equals(true)).ToList();
             return View(reserva);
         }
 
@@ -96,30 +163,25 @@ namespace Caribbean2.Controllers
             }
 
             var reserva = await _context.Reservas
+                .Include(r => r.Huespedes)
                 .Include(r => r.Servicios)
                 .FirstOrDefaultAsync(m => m.IdReserva == id);
             if (reserva == null)
             {
                 return NotFound();
             }
-
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "idCliente", "nombre", reserva.IdCliente);
-            ViewData["IdEstado"] = new SelectList(_context.ReservaEstados, "IdEstado", "Nombre", reserva.IdEstado);
-            ViewData["IdHabitacion"] = _context.Habitaciones.Select(h => new SelectListItem
-            {
-                Value = h.IdHabitacion.ToString(),
-                Text = $"{h.Nombre} - {h.PrecioHabitacion:C}"
-            }).ToList();
-            ViewData["IdHuesped"] = new SelectList(_context.Huespedes, "Id", "NombreCompleto", reserva.IdHuesped);
-            ViewData["ServiciosActivos"] = _context.Servicios.Where(s => s.EstadoServicio == true).ToList();
-
+            ViewBag.IdCliente = new SelectList(_context.Clientes, "IdCliente", "Nombre", reserva.IdCliente);
+            ViewBag.IdHabitacion = new SelectList(_context.Habitaciones, "IdHabitacion", "NumeroHabitacion", reserva.IdHabitacion);
+            ViewBag.Huespedes = new SelectList(_context.Huespedes, "Id", "NombreCompleto");
+            ViewBag.IdEstado = new SelectList(_context.ReservaEstados, "IdEstado", "Nombre", reserva.IdEstado);
+            ViewBag.ServiciosActivos = _context.Servicios.Where(s => s.EstadoServicio.Equals(true)).ToList();
             return View(reserva);
         }
 
         // POST: Reservas/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdReserva,IdCliente,IdHuesped,IdHabitacion,FechaInicio,FechaFin,NumeroPersonas,PrecioTotal,Anticipo,IdEstado,Notas")] Reserva reserva, int[] ServiciosSeleccionados)
+        public async Task<IActionResult> Edit(int id, [Bind("IdReserva,IdCliente,IdHabitacion,FechaInicio,FechaFin,NumeroPersonas,PrecioTotal,Anticipo,Notas,IdEstado")] Reserva reserva, int[] HuespedesSeleccionados, int[] ServiciosSeleccionados)
         {
             if (id != reserva.IdReserva)
             {
@@ -130,31 +192,48 @@ namespace Caribbean2.Controllers
             {
                 try
                 {
-                    // Actualizar los servicios seleccionados
-                    var reservaExistente = await _context.Reservas
+                    var reservaToUpdate = await _context.Reservas
+                        .Include(r => r.Huespedes)
                         .Include(r => r.Servicios)
-                        .FirstOrDefaultAsync(r => r.IdReserva == id);
+                        .FirstOrDefaultAsync(m => m.IdReserva == id);
 
-                    if (reservaExistente != null)
+                    if (reservaToUpdate == null)
                     {
-                        reservaExistente.Servicios.Clear();
-                        reservaExistente.Servicios = await _context.Servicios.Where(s => ServiciosSeleccionados.Contains(s.IdServicio)).ToListAsync();
-
-                        // Actualizar los demás campos
-                        reservaExistente.IdCliente = reserva.IdCliente;
-                        reservaExistente.IdHuesped = reserva.IdHuesped;
-                        reservaExistente.IdHabitacion = reserva.IdHabitacion;
-                        reservaExistente.FechaInicio = reserva.FechaInicio;
-                        reservaExistente.FechaFin = reserva.FechaFin;
-                        reservaExistente.NumeroPersonas = reserva.NumeroPersonas;
-                        reservaExistente.PrecioTotal = reserva.PrecioTotal;
-                        reservaExistente.Anticipo = reserva.Anticipo;
-                        reservaExistente.IdEstado = reserva.IdEstado;
-                        reservaExistente.Notas = reserva.Notas;
-
-                        _context.Update(reservaExistente);
-                        await _context.SaveChangesAsync();
+                        return NotFound();
                     }
+
+                    reservaToUpdate.IdCliente = reserva.IdCliente;
+                    reservaToUpdate.IdHabitacion = reserva.IdHabitacion;
+                    reservaToUpdate.FechaInicio = reserva.FechaInicio;
+                    reservaToUpdate.FechaFin = reserva.FechaFin;
+                    reservaToUpdate.NumeroPersonas = reserva.NumeroPersonas;
+                    reservaToUpdate.PrecioTotal = reserva.PrecioTotal;
+                    reservaToUpdate.Anticipo = reserva.Anticipo;
+                    reservaToUpdate.IdEstado = reserva.IdEstado;
+                    reservaToUpdate.Notas = reserva.Notas;
+
+                    reservaToUpdate.Huespedes.Clear();
+                    foreach (var huespedId in HuespedesSeleccionados)
+                    {
+                        var huesped = await _context.Huespedes.FindAsync(huespedId);
+                        if (huesped != null)
+                        {
+                            reservaToUpdate.Huespedes.Add(huesped);
+                        }
+                    }
+
+                    reservaToUpdate.Servicios.Clear();
+                    foreach (var servicioId in ServiciosSeleccionados)
+                    {
+                        var servicio = await _context.Servicios.FindAsync(servicioId);
+                        if (servicio != null)
+                        {
+                            reservaToUpdate.Servicios.Add(servicio);
+                        }
+                    }
+
+                    _context.Update(reservaToUpdate);
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -169,13 +248,11 @@ namespace Caribbean2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "idCliente", "nombre", reserva.IdCliente);
-            ViewData["IdEstado"] = new SelectList(_context.ReservaEstados, "IdEstado", "Nombre", reserva.IdEstado);
-            ViewData["IdHabitacion"] = new SelectList(_context.Habitaciones, "IdHabitacion", "Nombre", reserva.IdHabitacion);
-            ViewData["IdHuesped"] = new SelectList(_context.Huespedes, "Id", "CorreoElectronico", reserva.IdHuesped);
-            ViewData["ServiciosActivos"] = _context.Servicios.Where(s => s.EstadoServicio == true).ToList();
-
+            ViewBag.IdCliente = new SelectList(_context.Clientes, "IdCliente", "NombreCompleto", reserva.IdCliente);
+            ViewBag.IdHabitacion = new SelectList(_context.Habitaciones, "IdHabitacion", "NumeroHabitacion", reserva.IdHabitacion);
+            ViewBag.Huespedes = new SelectList(_context.Huespedes, "Id", "NombreCompleto");
+            ViewBag.IdEstado = new SelectList(_context.ReservaEstados, "IdEstado", "Nombre", reserva.IdEstado);
+            ViewBag.ServiciosActivos = _context.Servicios.Where(s => s.EstadoServicio.Equals(true)).ToList();
             return View(reserva);
         }
 
@@ -189,9 +266,11 @@ namespace Caribbean2.Controllers
 
             var reserva = await _context.Reservas
                 .Include(r => r.Cliente)
-                .Include(r => r.Estado)
                 .Include(r => r.Habitacion)
-                .Include(r => r.Huesped)
+                .Include(r => r.Estado)
+                .Include(r => r.Huespedes)
+                .Include(r => r.Servicios)
+                .Include(r => r.Pagos)
                 .FirstOrDefaultAsync(m => m.IdReserva == id);
             if (reserva == null)
             {
@@ -210,9 +289,8 @@ namespace Caribbean2.Controllers
             if (reserva != null)
             {
                 _context.Reservas.Remove(reserva);
+                await _context.SaveChangesAsync();
             }
-
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

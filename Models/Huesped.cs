@@ -1,5 +1,6 @@
 ﻿using Caribbean2.Validations;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,7 +12,7 @@ public class Huesped
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
-    [Required(ErrorMessage = "El nombre completo es obligatorio.")]
+    [Required(ErrorMessage = "El nombre es obligatorio.")]
     [StringLength(70, ErrorMessage = "El nombre completo no puede tener más de 70 caracteres.")]
     public string NombreCompleto { get; set; }
 
@@ -48,5 +49,7 @@ public class Huesped
     [ForeignKey("IdEstadoHuesped")]
     public HuespedEstado EstadoHuesped { get; set; }
 
+    // Relación muchos a muchos con Reserva
+    public virtual ICollection<Reserva> Reservas { get; set; } = new List<Reserva>();
 
 }

@@ -206,7 +206,7 @@ public class CaribbeanContext : DbContext
             new ReservaEstado 
             { 
                 IdEstado = 1, 
-                Nombre = "En Pendiente" 
+                Nombre = "Pendiente" 
             },
             new ReservaEstado 
             { 
@@ -238,28 +238,35 @@ public class CaribbeanContext : DbContext
         .HasForeignKey(r => r.IdCliente);
 
         modelBuilder.Entity<Reserva>()
-            .HasOne(r => r.Huesped)
-            .WithMany()
-            .HasForeignKey(r => r.IdHuesped);
-
-        modelBuilder.Entity<Reserva>()
             .HasOne(r => r.Habitacion)
             .WithMany(h => h.Reservas)
             .HasForeignKey(r => r.IdHabitacion);
 
         modelBuilder.Entity<Reserva>()
             .HasMany(r => r.Servicios)
-            .WithMany(s => s.Reservas);
-
-        modelBuilder.Entity<Reserva>()
-            .HasMany(r => r.Pagos)
-            .WithOne(p => p.idReservaNavigation)
-            .HasForeignKey(p => p.idReserva);
+            .WithMany(s => s.Reservas)
+            .UsingEntity(j => j.ToTable("ReservaServicio"));
 
         modelBuilder.Entity<Reserva>()
             .HasOne(r => r.Estado)
             .WithMany(e => e.Reservas)
             .HasForeignKey(r => r.IdEstado)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Reserva>()
+            .HasMany(r => r.Huespedes)
+            .WithMany(h => h.Reservas)
+            .UsingEntity(j => j.ToTable("ReservaHuesped"));
+
+        modelBuilder.Entity<Reserva>()
+            .HasMany(r => r.Pagos)
+            .WithOne(p => p.Reserva)
+            .HasForeignKey(p => p.IdReserva);
+
+        modelBuilder.Entity<Reserva>()
+            .HasMany(r => r.Pagos)
+            .WithOne(p => p.Reserva)
+            .HasForeignKey(p => p.IdReserva)
             .OnDelete(DeleteBehavior.Restrict);
                 
         // Configuraciones adicionales si es necesario
@@ -381,5 +388,3 @@ public class CaribbeanContext : DbContext
         
     }
 }
-
-

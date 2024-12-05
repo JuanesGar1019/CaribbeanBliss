@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Caribbean2")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+93e00460c2eda6fac01654b633bb71d636f94098")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fa374402be30eac03a33f68cbe306b8fda388776")]
 [assembly: System.Reflection.AssemblyProductAttribute("Caribbean2")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Caribbean2")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -3,21 +3,28 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Caribbean2.Models;
-
-public partial class Pago
+namespace Caribbean2.Models
 {
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [Key]
-    public int idPago { get; set; }
+    public class Pago
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int IdPago { get; set; }
 
-    public string tipo_pago { get; set; } = null!;
+        [Required(ErrorMessage = "El tipo de pago es obligatorio")]
+        public string TipoPago { get; set; }
 
-    public DateOnly fecha { get; set; }
+        [Required(ErrorMessage = "La fecha es obligatoria")]
+        public DateTime Fecha { get; set; }
 
-    public int valor { get; set; }
+        [Required(ErrorMessage = "El valor es obligatorio")]
+        [Range(1, int.MaxValue, ErrorMessage = "El valor debe ser mayor a 0")]
+        public decimal Valor { get; set; }
 
-    public int idReserva { get; set; }
+        [Required(ErrorMessage = "Debe especificar la reserva")]
+        public int IdReserva { get; set; }
 
-    public virtual Reserva idReservaNavigation { get; set; } = null!;
+        [ForeignKey("IdReserva")]
+        public virtual Reserva Reserva { get; set; }
+    }
 }

@@ -279,27 +279,28 @@ namespace Caribbean2.Migrations
 
             modelBuilder.Entity("Caribbean2.Models.Pago", b =>
                 {
-                    b.Property<int>("idPago")
+                    b.Property<int>("IdPago")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idPago"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdPago"));
 
-                    b.Property<DateOnly>("fecha")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("idReserva")
+                    b.Property<int>("IdReserva")
                         .HasColumnType("int");
 
-                    b.Property<string>("tipo_pago")
+                    b.Property<string>("TipoPago")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("valor")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Valor")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("idPago");
+                    b.HasKey("IdPago");
 
-                    b.HasIndex("idReserva");
+                    b.HasIndex("IdReserva");
 
                     b.ToTable("Pago");
                 });
@@ -354,12 +355,8 @@ namespace Caribbean2.Migrations
                     b.Property<int>("IdHabitacion")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdHuesped")
-                        .HasColumnType("int");
-
                     b.Property<string>("Notas")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("NumeroPersonas")
                         .HasColumnType("int");
@@ -374,8 +371,6 @@ namespace Caribbean2.Migrations
                     b.HasIndex("IdEstado");
 
                     b.HasIndex("IdHabitacion");
-
-                    b.HasIndex("IdHuesped");
 
                     b.ToTable("Reservas");
                 });
@@ -401,7 +396,7 @@ namespace Caribbean2.Migrations
                         new
                         {
                             IdEstado = 1,
-                            Nombre = "En Pendiente"
+                            Nombre = "Pendiente"
                         },
                         new
                         {
@@ -670,7 +665,7 @@ namespace Caribbean2.Migrations
                             Contrasena = "nimad4321",
                             Correo = "admin@admincorreo.com",
                             Estado = true,
-                            FechaRegistro = new DateTime(2024, 12, 4, 6, 24, 2, 434, DateTimeKind.Local).AddTicks(6189),
+                            FechaRegistro = new DateTime(2024, 12, 4, 18, 57, 46, 25, DateTimeKind.Local).AddTicks(2778),
                             IdRol = 3,
                             Identificacion = "1",
                             NombresApellidos = "admin",
@@ -702,6 +697,9 @@ namespace Caribbean2.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<int>("NumeroHabitacion")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("PrecioHabitacion")
                         .HasColumnType("money");
 
@@ -719,6 +717,7 @@ namespace Caribbean2.Migrations
                             Descripcion = "Habitación Deluxe con diseño moderno, equipada con comodidades premium para una experiencia única de confort.",
                             IdEstado = 1,
                             Nombre = "Deluxe",
+                            NumeroHabitacion = 0,
                             PrecioHabitacion = 359.99m
                         },
                         new
@@ -728,6 +727,7 @@ namespace Caribbean2.Migrations
                             Descripcion = "Habitación ideal para familias, amplia y cómoda, con capacidad para grupos grandes y servicios adaptados a sus necesidades.",
                             IdEstado = 1,
                             Nombre = "Familiar",
+                            NumeroHabitacion = 0,
                             PrecioHabitacion = 239.99m
                         },
                         new
@@ -737,6 +737,7 @@ namespace Caribbean2.Migrations
                             Descripcion = "Habitación perfecta para una sola persona, diseñada para garantizar privacidad y un espacio acogedor.",
                             IdEstado = 1,
                             Nombre = "Individual",
+                            NumeroHabitacion = 0,
                             PrecioHabitacion = 119.99m
                         },
                         new
@@ -746,6 +747,7 @@ namespace Caribbean2.Migrations
                             Descripcion = "Habitación VIP con servicios exclusivos, lujo excepcional y diseño elegante para huéspedes exigentes.",
                             IdEstado = 1,
                             Nombre = "VIP",
+                            NumeroHabitacion = 0,
                             PrecioHabitacion = 539.99m
                         });
                 });
@@ -785,6 +787,21 @@ namespace Caribbean2.Migrations
                         });
                 });
 
+            modelBuilder.Entity("HuespedReserva", b =>
+                {
+                    b.Property<int>("HuespedesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReservasIdReserva")
+                        .HasColumnType("int");
+
+                    b.HasKey("HuespedesId", "ReservasIdReserva");
+
+                    b.HasIndex("ReservasIdReserva");
+
+                    b.ToTable("ReservaHuesped", (string)null);
+                });
+
             modelBuilder.Entity("ReservaServicio", b =>
                 {
                     b.Property<int>("ReservasIdReserva")
@@ -797,7 +814,7 @@ namespace Caribbean2.Migrations
 
                     b.HasIndex("ServiciosIdServicio");
 
-                    b.ToTable("ReservaServicio");
+                    b.ToTable("ReservaServicio", (string)null);
                 });
 
             modelBuilder.Entity("RolPermiso", b =>
@@ -846,13 +863,13 @@ namespace Caribbean2.Migrations
 
             modelBuilder.Entity("Caribbean2.Models.Pago", b =>
                 {
-                    b.HasOne("Caribbean2.Models.Reserva", "idReservaNavigation")
+                    b.HasOne("Caribbean2.Models.Reserva", "Reserva")
                         .WithMany("Pagos")
-                        .HasForeignKey("idReserva")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("IdReserva")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("idReservaNavigation");
+                    b.Navigation("Reserva");
                 });
 
             modelBuilder.Entity("Caribbean2.Models.Reserva", b =>
@@ -875,19 +892,11 @@ namespace Caribbean2.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Caribbean2.Models.Huesped", "Huesped")
-                        .WithMany()
-                        .HasForeignKey("IdHuesped")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Cliente");
 
                     b.Navigation("Estado");
 
                     b.Navigation("Habitacion");
-
-                    b.Navigation("Huesped");
                 });
 
             modelBuilder.Entity("Caribbean2.Models.Usuarios", b =>
@@ -914,6 +923,21 @@ namespace Caribbean2.Migrations
                         .IsRequired();
 
                     b.Navigation("EstadoHabitacion");
+                });
+
+            modelBuilder.Entity("HuespedReserva", b =>
+                {
+                    b.HasOne("Caribbean2.Models.Huesped", null)
+                        .WithMany()
+                        .HasForeignKey("HuespedesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Caribbean2.Models.Reserva", null)
+                        .WithMany()
+                        .HasForeignKey("ReservasIdReserva")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ReservaServicio", b =>

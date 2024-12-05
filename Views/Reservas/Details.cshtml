@@ -72,10 +72,15 @@
                         <dl class="row">
                             <dt class="col-sm-2">Cliente</dt>
                             <dd class="col-sm-10">@Html.DisplayFor(model => model.Cliente.nombre)</dd>
-                            <dt class="col-sm-2">Huésped</dt>
-                            <dd class="col-sm-10">@Html.DisplayFor(model => model.Huesped.CorreoElectronico)</dd>
+                            <dt class="col-sm-2">Huéspedes</dt>
+                            <dd class="col-sm-10">
+                                @foreach (var huesped in Model.Huespedes)
+                                {
+                                    <p>@huesped.NombreCompleto</p>
+                                }
+                            </dd>
                             <dt class="col-sm-2">Habitación</dt>
-                            <dd class="col-sm-10">@Html.DisplayFor(model => model.Habitacion.Nombre)</dd>
+                            <dd class="col-sm-10">@Html.DisplayFor(model => model.Habitacion.NumeroHabitacion)</dd>
                             <dt class="col-sm-2">Fecha Inicio</dt>
                             <dd class="col-sm-10">@Html.DisplayFor(model => model.FechaInicio)</dd>
                             <dt class="col-sm-2">Fecha Fin</dt>

@@ -158,12 +158,17 @@
                             @if (userRoleId == 1)
                             {
                                 <li>
+                                    <a asp-controller="Reservas" asp-action="ResevaCliente">
+                                        <ion-icon name="calendar-number-outline"></ion-icon>
+                                        <span>Reservar</span>
+                                    </a>
+                                </li>  
+                                <li>
                                     <a asp-controller="Caribbean" asp-action="Contacto">
                                         <ion-icon name="call-outline"></ion-icon>
                                         <span>Contacto</span>
                                     </a>
                                 </li>
-                                
                             }
                             @if (userRoleId == 2 || userRoleId == 3 || userRoleId == 4)
                             {
@@ -201,7 +206,7 @@
                                                         <span>Permisos</span>
                                                     </a>
                                                     <a class="dropdown-item" href="@Url.Action("Index", "Metricas")">
-                                                        <ion-icon name="shield-checkmark-outline"></ion-icon>
+                                                        <ion-icon name="analytics-outline"></ion-icon>
                                                         <span>Metricas</span>
                                                     </a>
                                                 </div>
@@ -239,7 +244,7 @@
                                 </li>
                                 <li>
                                     <a asp-controller="Reservas" asp-action="Index">
-                                        <ion-icon name="mail-outline"></ion-icon>
+                                        <ion-icon name="calendar-number-outline"></ion-icon>
                                         <span>Reservas</span>
                                     </a>
                                 </li>  
@@ -248,7 +253,13 @@
                                         <ion-icon name="mail-outline"></ion-icon>
                                         <span>Suscripciones</span>
                                     </a>
-                                </li>                      
+                                </li>
+                                <li>
+                                    <a asp-controller="Consultas" asp-action="Index">
+                                        <ion-icon name="chatbubbles-outline"></ion-icon>
+                                        <span>Consultas</span>
+                                    </a>
+                                </li>                        
                             }
                             
                         }

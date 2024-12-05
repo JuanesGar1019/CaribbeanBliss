@@ -17,6 +17,7 @@ namespace Caribbean2.Controllers
         {
             _context = context;
         }
+
         [RoleAuthorize(2, 3, 4)]
         // GET: Habitaciones
         public async Task<IActionResult> Index()
@@ -54,7 +55,7 @@ namespace Caribbean2.Controllers
         // POST: Habitaciones/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdHabitacion,Nombre,Descripcion,Capacidad,PrecioHabitacion,IdEstado")] Habitacion habitacion)
+        public async Task<IActionResult> Create([Bind("IdHabitacion,Nombre,Descripcion,Capacidad,NumeroHabitacion,PrecioHabitacion,IdEstado")] Habitacion habitacion)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +87,7 @@ namespace Caribbean2.Controllers
         // POST: Habitaciones/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdHabitacion,Nombre,Descripcion,Capacidad,PrecioHabitacion,IdEstado")] Habitacion habitacion)
+        public async Task<IActionResult> Edit(int id, [Bind("IdHabitacion,Nombre,Descripcion,Capacidad,NumeroHabitacion,PrecioHabitacion,IdEstado")] Habitacion habitacion)
         {
             if (id != habitacion.IdHabitacion)
             {

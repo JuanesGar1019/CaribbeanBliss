@@ -102,6 +102,36 @@ namespace Caribbean2.Controllers
             return View(huesped);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateAjax([FromForm] Huesped huesped)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Add(huesped);
+                    await _context.SaveChangesAsync();
+                    
+                    return Json(new { 
+                        success = true, 
+                        message = "Huésped creado correctamente",
+                        huesped = new { 
+                            id = huesped.Id, 
+                            nombreCompleto = huesped.NombreCompleto 
+                        }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, message = ex.Message });
+                }
+            }
+            return Json(new { 
+                success = false, 
+                message = "Datos inválidos", 
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) 
+            });
+        }
 
         // GET: Huespedes/Edit/5
         public async Task<IActionResult> Edit(int? id)

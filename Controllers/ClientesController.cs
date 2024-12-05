@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Linq;
 
 namespace Caribbean2.Controllers
 {
@@ -43,6 +45,45 @@ namespace Caribbean2.Controllers
             }
             ViewBag.RolId = new SelectList(_context.Roles, "IdRol", "NombreRol", cliente.idRol);
             return View(cliente);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAjax([FromForm] Cliente cliente)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _context.Add(cliente);
+                    await _context.SaveChangesAsync();
+                    return Json(new { 
+                        success = true, 
+                        message = "Cliente creado correctamente",
+                        cliente = new { 
+                            id = cliente.idCliente, 
+                            nombre = cliente.nombre 
+                        }
+                    });
+                }
+
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return Json(new { 
+                    success = false, 
+                    message = "Datos inválidos", 
+                    errors = errors 
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { 
+                    success = false, 
+                    message = "Error al crear el cliente: " + ex.Message 
+                });
+            }
         }
 
         // Acción para mostrar los detalles de un cliente

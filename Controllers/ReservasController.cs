@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -61,50 +61,36 @@ namespace Caribbean2.Controllers
         {
             try 
             {
-                var clientes = _context.Clientes
-                    .Where(c => c.ClienteEstado)
-                    .ToList();
+                // Modificar la consulta de habitaciones para incluir más información
                 var habitaciones = _context.Habitaciones
-                    .Where(h => h.IdEstado == 1)
+                    .Where(h => h.IdEstado == 1)  // Solo habitaciones disponibles
+                    .Select(h => new
+                    {
+                        IdHabitacion = h.IdHabitacion,
+                        DisplayText = $"Habitación {h.NumeroHabitacion} - {h.Nombre} - ${h.PrecioHabitacion:N2}",
+                        h.PrecioHabitacion,
+                        h.Capacidad
+                    })
                     .ToList();
-                var huespedes = _context.Huespedes.ToList();
-                var estados = _context.ReservaEstados.ToList();
-                var serviciosActivos = _context.Servicios
-                    .Where(s => s.EstadoServicio)
-                    .ToList();
 
-                // Validar que existan datos
-                if (!clientes.Any())
-                    ModelState.AddModelError("", "No hay clientes disponibles");
-                if (!habitaciones.Any())
-                    ModelState.AddModelError("", "No hay habitaciones disponibles");
-                if (!huespedes.Any())
-                    ModelState.AddModelError("", "No hay huéspedes disponibles");
-                if (!estados.Any())
-                    ModelState.AddModelError("", "No hay estados disponibles");
-                if (!serviciosActivos.Any())
-                    ModelState.AddModelError("", "No hay servicios disponibles");
+                ViewBag.IdHabitacion = new SelectList(habitaciones, "IdHabitacion", "DisplayText");
+                
+                ViewBag.IdCliente = new SelectList(_context.Clientes.Where(c => c.ClienteEstado), "idCliente", "nombre");
+                ViewBag.Huespedes = new SelectList(_context.Huespedes, "Id", "NombreCompleto");
+                ViewBag.IdEstado = new SelectList(_context.ReservaEstados, "IdEstado", "Nombre");
+                ViewBag.ServiciosActivos = _context.Servicios.Where(s => s.EstadoServicio).ToList();
 
-                // Corregir los nombres de las propiedades según el modelo Cliente
-                ViewBag.IdCliente = new SelectList(clientes, "idCliente", "nombre");
-                ViewBag.IdHabitacion = new SelectList(habitaciones.Select(h => new
-                {
-                    IdHabitacion = h.IdHabitacion,
-                    DisplayText = $"Habitación {h.NumeroHabitacion} - {h.Nombre} - Precio: ${h.PrecioHabitacion}",
-                    h.Capacidad
-                }), "IdHabitacion", "DisplayText");
-                ViewBag.Huespedes = new MultiSelectList(huespedes, "Id", "NombreCompleto");
-                ViewBag.IdEstado = new SelectList(estados, "IdEstado", "Nombre");
-                ViewBag.ServiciosActivos = serviciosActivos;
+                // Datos para el modal de Cliente
+                ViewBag.RolId = new SelectList(_context.Roles, "IdRol", "NombreRol");
 
-                ViewBag.HabitacionesCapacidad = habitaciones.ToDictionary(h => h.IdHabitacion, h => h.Capacidad);
+                // Datos para el modal de Huésped
+                ViewBag.IdEstadoHuesped = new SelectList(_context.HuespedEstados, "IdEstadoHuesped", "NombreEstado");
 
                 return View();
             }
             catch (Exception ex)
             {
-                // Log the error
-                ModelState.AddModelError("", "Ocurrió un error al cargar los datos" + ex);
+                ModelState.AddModelError("", "Ocurrió un error al cargar los datos: " + ex.Message);
                 return View();
             }
         }
@@ -297,6 +283,17 @@ namespace Caribbean2.Controllers
         private bool ReservaExists(int id)
         {
             return _context.Reservas.Any(e => e.IdReserva == id);
+        }
+
+        public JsonResult GetHuespedes()
+        {
+            var huespedes = _context.Huespedes
+                .Select(h => new { 
+                    value = h.Id, 
+                    text = h.NombreCompleto 
+                })
+                .ToList();
+            return Json(huespedes);
         }
     }
 }

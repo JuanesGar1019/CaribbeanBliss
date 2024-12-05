@@ -7,7 +7,7 @@
 
 <div class="reservation-container">
     <div class="container">
-        <h1 class="text-center mb-4" style="color: #1e3d59; font-family: 'Playfair Display', serif;">
+        <h1 class="text-center mb-4" style="color: #ffffff; font-family: 'Playfair Display', serif;">
             Gestión de Habitaciones
         </h1>
         <div class="card">
@@ -37,15 +37,17 @@
                                 <td>@Html.DisplayFor(modelItem => item.PrecioHabitacion)</td>
                                 <td>@Html.DisplayFor(modelItem => item.EstadoHabitacion.Nombre)</td>
                                 <td>
-                                    <a asp-action="Edit" asp-route-id="@item.IdHabitacion" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Editar">
-                                        <ion-icon name="pencil-outline"></ion-icon>
-                                    </a>
-                                    <a asp-action="Details" asp-route-id="@item.IdHabitacion" class="btn btn-sm btn-info" data-bs-toggle="tooltip" title="Detalles">
-                                        <ion-icon name="eye-outline"></ion-icon>
-                                    </a>
-                                    <a asp-action="Delete" asp-route-id="@item.IdHabitacion" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Eliminar">
-                                        <ion-icon name="trash-outline"></ion-icon>
-                                    </a>
+                                    <div class="action-buttons">
+                                        <a asp-action="Edit" asp-route-id="@item.IdHabitacion" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Editar">
+                                            <ion-icon name="pencil-outline"></ion-icon>
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.IdHabitacion" class="btn btn-sm btn-info" data-bs-toggle="tooltip" title="Detalles">
+                                            <ion-icon name="eye-outline"></ion-icon>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.IdHabitacion" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Eliminar">
+                                            <ion-icon name="trash-outline"></ion-icon>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         }
@@ -85,8 +87,31 @@
 }
 
 <style>
+                  body {
+    position: relative;
+    min-height: 100vh;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/img/imgpagina.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.; /* Reduced opacity for darker effect */
+    z-index: -1;
+    filter: brightness(0.5) contrast(1.2); /* Reduced brightness for darker image */
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+}   
 .reservation-container {
-    background: #f8f9fa;
+
     padding: 2rem 0;
 }
 
@@ -157,6 +182,13 @@
     padding: 0.4rem 0.8rem;
     margin: 0 0.2rem;
     border-radius: 6px;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
 }
 
 .btn-warning {
@@ -210,5 +242,25 @@
     .table td {
         padding: 0.75rem;
     }
+}
+
+/* Ajuste de contenedor de botones */
+td .action-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+/* Ajuste de columna acciones */
+.table th:last-child,
+.table td:last-child {
+    min-width: 135px;
+    white-space: nowrap;
+}
+
+/* Ajuste de íconos */
+ion-icon {
+    font-size: 18px;
 }
 </style>

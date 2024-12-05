@@ -132,34 +132,44 @@ body {
     gap: 10px; /* Espacio entre los campos */
 }
 
+/* Update the input-box styles */
 .input-box {
     position: relative;
-    margin-bottom: 20px;  /* Increased from 12px */
+    margin-bottom: 35px;
+    display: flex;
+    align-items: center;
 }
+
 
 .input-box i {
     position: absolute;
+    left: 20px;
     top: 50%;
-    left: 20px;    /* Increased from 12px */
     transform: translateY(-50%);
     color: #fff;
-    font-size: 18px;  /* Increased from 13px */
-}
+    font-size: 18px;
+    z-index: 1;
+  }
 
+/* Ensure input fields maintain consistent spacing */
 .input-box .input-field {
     width: 100%;
     padding: 10px 10px 10px 40px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    height: 45px;
 }
 
+/* For select elements */
+.input-box select.input-field {
+    padding-left: 40px;
+    height: 45px;
+}
+
+/* Add specific styling for password toggle icon */
 .input-box .toggle-password {
-    position: absolute;
-    top: 50%;
     right: 10px;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: #999;
+    left: auto;
 }
 
 .input-box .validation-message {
@@ -421,11 +431,22 @@ select.input-field {
 }
 
 .input-validation-error {
-    border-color: #dc3545;
+    border-color: #dc3545 !important;
+}
+
+/* Update validation message positioning */
+.field-validation-error {
+    position: absolute;
+    bottom: -20px;
+    left: 15px;
+    font-size: 12px;
+    color: #dc3545;
+    white-space: nowrap;
+    z-index: 2;
 }
 
 .field-validation-error {
     color: #dc3545;
-    font-size: 0.875rem;
-    margin-top: 0.25rem;
+    /* font-size: 0.875rem;
+    margin-top: 0.25rem; */
 }

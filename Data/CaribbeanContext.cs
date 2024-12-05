@@ -17,6 +17,7 @@ public class CaribbeanContext : DbContext
     public DbSet<Usuarios> Usuarios { get; set; }
     public DbSet<Consulta> Consultas { get; set; }
     public DbSet<Cliente> Clientes { get; set; }
+    public DbSet<ClienteReserva> ClienteReservas { get; set; }
     public DbSet<Reserva> Reservas { get; set; }
     public DbSet<ReservaEstado> ReservaEstados { get; set; }
     public CaribbeanContext(DbContextOptions<CaribbeanContext> options)
@@ -380,6 +381,8 @@ public class CaribbeanContext : DbContext
 
         
     }
+
+public DbSet<Caribbean2.Models.ClienteReserva> ClienteReserva { get; set; }
 }
 
 

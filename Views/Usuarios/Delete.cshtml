@@ -1,340 +1,216 @@
 ﻿@model Caribbean2.Models.Usuarios
-
 @{
     ViewData["Title"] = "Delete";
-}
-
-@{
-    ViewData["Title"] = "Logeados";
     Layout = null;
 }
-<!DOCTYPE html>
-<html lang="en">
 
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sidebar</title>
-    <link rel="stylesheet" href="~/css/sideBar.css">
-    <link rel="stylesheet" href="~/css/roles.css">
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="~/css/menuCentral.css">
-    <link rel="stylesheet" href="~/css/logeados.css">
+    <title>Eliminar Usuario</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
-    <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <style>
+              body {
+    position: relative;
+    min-height: 100vh;
+}
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap"
-          rel="stylesheet">
-
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-
-
-
-    <!-- Libraries Stylesheet -->
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-</head>
-
-<body>
-
-    <div class="menu">
-        <ion-icon name="menu-outline"></ion-icon>
-        <ion-icon name="close-outline"></ion-icon>
-    </div>
-
-    <div class="barra-lateral">
-        <div>
-            <div class="nombre-pagina">
-                <ion-icon id="cloud" name="cloud-outline"></ion-icon>
-                <span>CaribeanBliss</span>
-            </div>
-        </div>
-
-        <nav class="navegacion">
-            <ul>
-                <li>
-                    <a id="home" asp-controller="Caribbean" asp-action="Index">
-                        <ion-icon name="home-outline"></ion-icon>
-                        <span>Home</span>
-                    </a>
-                </li>
-                <li>
-                    <a asp-controller="Caribbean" asp-action="Dashboard">
-                        <ion-icon name="stats-chart-outline"></ion-icon>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a asp-controller="Caribbean" asp-action="Huespedes">
-                        <ion-icon name="people-outline"></ion-icon>
-                        <span>Usuarios</span>
-                    </a>
-                </li>
-                <li>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <ion-icon name="bed-outline"></ion-icon>
-                            <span>Alojamiento</span>
-                        </a>
-                        <div class="dropdown-menu m-0">
-                            <a class="dropdown-item" asp-controller="Caribbean" asp-action="Huespedes">Huespedes</a>
-                            <a class="dropdown-item" asp-controller="Caribbean" asp-action="Reservas">Reservas</a>
-                            <a class="dropdown-item" asp-controller="Caribbean" asp-action="Habitaciones">Habitaciones</a>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <a asp-controller="Caribbean" asp-action="Servicios">
-                        <ion-icon name="briefcase-outline"></ion-icon>
-                        <span>Servicios</span>
-                    </a>
-                </li>
-                <li>
-                    <a asp-controller="Caribbean" asp-action="Roles">
-                        <ion-icon name="key-outline"></ion-icon>
-                        <span>Roles</span>
-                    </a>
-                </li>
-                <li>
-                    <a asp-controller="Caribbean" asp-action="Contacto">
-                        <ion-icon name="call-outline"></ion-icon>
-                        <span>Contacto</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-
-        <div class="caribean_logo">
-            <img src="~/img/caribeanbliss_logo.png" alt="Home" srcset="">
-        </div>
-
-        <div>
-            <div class="linea"></div>
-
-            <div class="modo-oscuro">
-                <div class="info">
-                    <ion-icon name="moon-outline"></ion-icon>
-                    <span>Modo Dark</span>
-                </div>
-                <div class="switch">
-                    <div class="base">
-                        <div class="circulo">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-
-    <main>
-        <header class="container-fluid bg-dark px-5 mb-2">
-            <div class="container-fluid bg-dark px-5 d-lg-block d justify-content-around mb-2">
-                <div class="row gx-0 p-2 align-items-center">
-                    <div class="btn-group-container d-flex justify-content-end">
-                        <a href="" class="btn-modern d-flex d-lg-none" data-bs-toggle="tooltip"
-                           data-bs-placement="bottom" title="Registrarse">
-                            <i class="fas fa-user-plus"></i>
-                        </a>
-                        <a href="" class="btn-modern me-2 d-none d-lg-inline-flex">
-                            <i class="fas fa-sign-in-alt"></i> Cerrar sesión
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <!-- SECCION MODIFICABLE -->
-
-        <div class="container">
-            <h1>Detalles Del Usuario</h1>
-            <h3>¿Estás seguro de que quieres eliminar este Usuario?</h3>
-            
-            <dl class="row">
-                <div class="detail-pair">
-                    <dt>@Html.DisplayNameFor(model => model.NombresApellidos)</dt>
-                    <dd>@Html.DisplayFor(model => model.NombresApellidos)</dd>
-                </div>
-                <div class="detail-pair">
-                    <dt>@Html.DisplayNameFor(model => model.TipoIdentificacion)</dt>
-                    <dd>@Html.DisplayFor(model => model.TipoIdentificacion)</dd>
-                </div>
-                <div class="detail-pair">
-                    <dt>@Html.DisplayNameFor(model => model.Identificacion)</dt>
-                    <dd>@Html.DisplayFor(model => model.Identificacion)</dd>
-                </div>
-                <div class="detail-pair">
-                    <dt>@Html.DisplayNameFor(model => model.Telefono)</dt>
-                    <dd>@Html.DisplayFor(model => model.Telefono)</dd>
-                </div>
-                <div class="detail-pair">
-                    <dt>@Html.DisplayNameFor(model => model.Correo)</dt>
-                    <dd>@Html.DisplayFor(model => model.Correo)</dd>
-                </div>
-                <div class="detail-pair">
-                    <dt>@Html.DisplayNameFor(model => model.Contrasena)</dt>
-                    <dd>@Html.DisplayFor(model => model.Contrasena)</dd>
-                </div>
-                <div class="detail-pair">
-                    <dt>@Html.DisplayNameFor(model => model.FechaRegistro)</dt>
-                    <dd>@Html.DisplayFor(model => model.FechaRegistro)</dd>
-                </div>
-                <div class="detail-pair">
-                    <dt>@Html.DisplayNameFor(model => model.Estado)</dt>
-                    <dd>@Html.DisplayFor(model => model.Estado)</dd>
-                </div>
-            </dl>
-
-            <form asp-action="Delete">
-                <input type="hidden" asp-for="UsuarioID" />
-                <div class="form-actions">
-                    <input type="submit" value="Eliminar" class="btn btn-danger" />
-                    <a asp-action="Index" class="back-link">
-                        <i class="fas fa-arrow-left fa-2x" style="color: #007bff;"></i>
-                        <span style="color: #007bff;">Volver A la Lista</span>
-                    </a>
-                </div>
-            </form>
-        </div>
-
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-        <script>
-        $(document).ready(function() {
-            $("form").on("submit", function(e) {
-                e.preventDefault();
-                const form = $(this);
-                
-                Swal.fire({
-                    title: '¿Estás seguro?',
-                    text: "¿Deseas eliminar este usuario? Esta acción no se puede deshacer",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Sí, eliminar',
-                    cancelButtonText: 'Cancelar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: form.attr('action'),
-                            type: 'POST',
-                            data: form.serialize(),
-                            success: function(response) {
-                                if (response.success) {
-                                    Swal.fire({
-                                        title: '¡Eliminado!',
-                                        text: 'El usuario ha sido eliminado correctamente',
-                                        icon: 'success',
-                                        confirmButtonText: 'Ok'
-                                    }).then(() => {
-                                        window.location.href = '@Url.Action("Index", "Usuarios")';
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        title: 'Error',
-                                        text: response.message,
-                                        icon: 'error',
-                                        confirmButtonText: 'Ok'
-                                    });
-                                }
-                            },
-                            error: function() {
-                                Swal.fire({
-                                    title: 'Error',
-                                    text: 'Ocurrió un error al eliminar el usuario',
-                                    icon: 'error',
-                                    confirmButtonText: 'Ok'
-                                });
-                            }
-                        });
-                    }
-                });
-            });
-        });
-        </script>
-        <style>
-        .container {
-            background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-            padding: 2rem;
-            margin: 1rem auto;
-            width: 100%;
-            max-width: 1200px;
-            min-height: 600px;
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/img/imgpagina.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.; /* Reduced opacity for darker effect */
+    z-index: -1;
+    filter: brightness(0.5) contrast(1.2); /* Reduced brightness for darker image */
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+}   
+        .booking-header {
+            background: linear-gradient(rgba(30, 61, 89, 0.9), rgba(30, 61, 89, 0.9)),
+                        url('/images/hotel-bg.jpg') center/cover;
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+            border-radius: 10px;
         }
 
-        h1, h3 {
-            color: #2c3e50;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            text-align: left;
-            padding-left: 0.5rem;
-            border-bottom: 2px solid #e9ecef;
-            padding-bottom: 1rem;
+        .user-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        .user-card-header {
+            background: linear-gradient(135deg, #1e3d59 0%, #2b5278 100%);
+            padding: 1.5rem;
+            border: none;
+        }
+
+        .user-card-title {
+            color: white;
+            font-family: 'Playfair Display', serif;
+            margin: 0;
         }
 
         dl.row {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-            padding: 0.5rem;
+            margin-bottom: 1.5rem;
         }
 
         dt {
-            color: #34495e;
-            font-weight: 500;
-            min-width: 150px;
-            margin: 0;
+            color: #1e3d59;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
         }
 
         dd {
-            flex: 1;
-            margin: 0;
-            padding: 0.6rem;
+            color: #495057;
             background: #f8f9fa;
+            padding: 0.75rem;
+            border-radius: 8px;
             border: 1px solid #e9ecef;
-            border-radius: 4px;
-        }
-
-        .form-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 2rem;
-            grid-column: 1 / -1;
+            margin-bottom: 1rem;
         }
 
         .btn-danger {
             background: #dc3545;
             border: none;
-            border-radius: 4px;
-            color: white;
-            font-weight: 600;
-            padding: 0.8rem 2rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
 
-        .back-link {
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        .btn-danger:hover {
+            background: #bb2d3b;
+            transform: translateY(-2px);
         }
-        </style>
-    </main>
+
+        .btn-secondary {
+            background: #6c757d;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .detail-pair {
+            margin-bottom: 1rem;
+        }
+
+        .form-actions {
+            text-align: center;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="booking-header text-center">
+            <h1>Gestión de Usuarios</h1>
+            <p class="lead">Eliminar usuario de Caribbean Hotel</p>
+        </div>
+
+        <div class="user-card">
+            <div class="user-card-header">
+                <h2 class="user-card-title text-center">Eliminar Usuario</h2>
+            </div>
+
+            <div class="card-body p-4">
+                <dl class="row">
+                    <div class="col-md-6">
+                        <div class="detail-pair">
+                            <dt>Nombre Usuario</dt>
+                            <dd>@Html.DisplayFor(model => model.NombresApellidos)</dd>
+                        </div>
+                        <div class="detail-pair">
+                            <dt>Tipo Identificación</dt>
+                            <dd>@Html.DisplayFor(model => model.TipoIdentificacion)</dd>
+                        </div>
+                        <div class="detail-pair">
+                            <dt>Identificación</dt>
+                            <dd>@Html.DisplayFor(model => model.Identificacion)</dd>
+                        </div>
+                        <div class="detail-pair">
+                            <dt>Teléfono</dt>
+                            <dd>@Html.DisplayFor(model => model.Telefono)</dd>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="detail-pair">
+                            <dt>Correo</dt>
+                            <dd>@Html.DisplayFor(model => model.Correo)</dd>
+                        </div>
+                        <div class="detail-pair">
+                            <dt>Fecha Registro</dt>
+                            <dd>@Html.DisplayFor(model => model.FechaRegistro)</dd>
+                        </div>
+                        <div class="detail-pair">
+                            <dt>Estado</dt>
+                            <dd>@(Model.Estado ? "Activo" : "Inactivo")</dd>
+                        </div>
+                    </div>
+                </dl>
+
+                <form asp-action="Delete" id="deleteForm">
+                    <input type="hidden" asp-for="UsuarioID" />
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-danger me-2">
+                            <i class="bi bi-trash"></i> Eliminar
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left-circle"></i> Regresar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.getElementById('deleteForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción no se puede deshacer",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();
+                }
+            });
+        });
+    </script>
 </body>
 </html>

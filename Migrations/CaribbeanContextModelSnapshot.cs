@@ -670,7 +670,7 @@ namespace Caribbean2.Migrations
                             Contrasena = "nimad4321",
                             Correo = "admin@admincorreo.com",
                             Estado = true,
-                            FechaRegistro = new DateTime(2024, 12, 4, 6, 24, 2, 434, DateTimeKind.Local).AddTicks(6189),
+                            FechaRegistro = new DateTime(2024, 12, 4, 21, 31, 26, 91, DateTimeKind.Local).AddTicks(788),
                             IdRol = 3,
                             Identificacion = "1",
                             NombresApellidos = "admin",

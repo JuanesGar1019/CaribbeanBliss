@@ -119,7 +119,7 @@ namespace Caribbean2.Controllers
                 ModelState.AddModelError("", "Ocurrió un error al cargar los datos: " + ex.Message);
                 return View();
             }
-        }
+        }        
 
         // POST: Reservas/Create
         [HttpPost]
@@ -130,61 +130,53 @@ namespace Caribbean2.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    // Validar capacidad de la habitación
-                    var habitacion = await _context.Habitaciones.FindAsync(reserva.IdHabitacion);
-                    if (habitacion != null && reserva.NumeroPersonas > habitacion.Capacidad)
-                    {
-                        ModelState.AddModelError("NumeroPersonas", "El número de personas excede la capacidad de la habitación");
-                        PrepararViewBags(reserva);
-                        return View(reserva);
-                    }
-
                     // Inicializar las colecciones
                     reserva.Huespedes = new List<Huesped>();
                     reserva.Servicios = new List<Servicio>();
 
                     // Agregar huéspedes seleccionados
-                    if (HuespedesSeleccionados != null && HuespedesSeleccionados.Length > 0)
+                    foreach (var huespedId in HuespedesSeleccionados)
                     {
-                        foreach (var huespedId in HuespedesSeleccionados)
+                        var huesped = await _context.Huespedes.FindAsync(huespedId);
+                        if (huesped != null)
                         {
-                            var huesped = await _context.Huespedes.FindAsync(huespedId);
-                            if (huesped != null)
-                            {
-                                reserva.Huespedes.Add(huesped);
-                            }
+                            reserva.Huespedes.Add(huesped);
                         }
                     }
 
                     // Agregar servicios seleccionados
-                    if (ServiciosSeleccionados != null && ServiciosSeleccionados.Length > 0)
+                    foreach (var servicioId in ServiciosSeleccionados)
                     {
-                        foreach (var servicioId in ServiciosSeleccionados)
+                        var servicio = await _context.Servicios.FindAsync(servicioId);
+                        if (servicio != null)
                         {
-                            var servicio = await _context.Servicios.FindAsync(servicioId);
-                            if (servicio != null)
-                            {
-                                reserva.Servicios.Add(servicio);
-                            }
+                            reserva.Servicios.Add(servicio);
                         }
                     }
 
-                    _context.Add(reserva);
-                    await _context.SaveChangesAsync();
-
-                    // Mostrar mensaje de éxito antes de redirigir
-                    TempData["Success"] = "Reserva creada correctamente";
-                    return RedirectToAction(nameof(Index));
+                    try
+                    {
+                        _context.Add(reserva);
+                        Console.WriteLine(reserva);
+                        await _context.SaveChangesAsync();
+                        TempData["Success"] = "Reserva creada correctamente";
+                        return RedirectToAction(nameof(Index));
+                    }
+                    catch (Exception ex)
+                    {
+                        ModelState.AddModelError("", "Error al guardar la reserva: " + ex.Message);
+                        PrepararViewBags(reserva);
+                        return View(reserva);
+                    }
                 }
 
-                // Si llegamos aquí, algo falló
-                PrepararViewBags(reserva); // Asegurarse de que los ViewBag estén inicializados
+                PrepararViewBags(reserva);
                 return View(reserva);
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", "Error al crear la reserva: " + ex.Message);
-                PrepararViewBags(reserva); // Asegurarse de que los ViewBag estén inicializados incluso en caso de error
+                PrepararViewBags(reserva);
                 return View(reserva);
             }
         }
@@ -192,10 +184,8 @@ namespace Caribbean2.Controllers
         // Método auxiliar para preparar ViewBags
         private void PrepararViewBags(Reserva reserva = null)
         {
-            // Crear un generador de números aleatorios
             Random random = new Random();
 
-            // Modificar la consulta de habitaciones
             var habitaciones = _context.Habitaciones
                 .Where(h => h.IdEstado == 1)
                 .Select(h => new
@@ -223,7 +213,6 @@ namespace Caribbean2.Controllers
             ViewBag.RolId = new SelectList(_context.Roles, "IdRol", "NombreRol");
             ViewBag.IdEstadoHuesped = new SelectList(_context.HuespedEstados, "IdEstadoHuesped", "NombreEstado");
 
-            // Guardar los precios y capacidades como diccionarios serializados
             ViewBag.HabitacionesPrecios = habitaciones.ToDictionary(h => h.IdHabitacion, h => h.PrecioHabitacion);
             ViewBag.HabitacionesCapacidad = habitaciones.ToDictionary(h => h.IdHabitacion, h => h.Capacidad);
         }
